@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Balaika</string>
+
+    <string name="back_button">Back</string>
+
+    <string name="page_playroom">Playroom</string>
+    <string name="page_all_songs">All songs</string>
+    <string name="page_settings">Settings</string>
 </resources>

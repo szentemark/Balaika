@@ -12,13 +12,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.sp
 import com.example.balaika.ui.enums.BalaikaScreen
-import com.example.balaika.ui.enums.BottomNavigationItem
+import com.example.balaika.ui.enums.TabNavigationItem
 
 @Composable
 fun BalaikaBottomNavigationBar(
     currentScreen: BalaikaScreen,
-    onTabPressed: ((BottomNavigationItem) -> Unit),
-    navigationItemContentList: List<BottomNavigationItem>,
+    onTabPressed: ((TabNavigationItem) -> Unit),
+    navigationItemContentList: List<TabNavigationItem>,
     modifier: Modifier = Modifier
 ) {
     NavigationBar(modifier = modifier) {

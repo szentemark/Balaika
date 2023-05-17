@@ -13,7 +13,7 @@ import com.example.balaika.ui.composable.navigation.BalaikaBottomNavigationBar
 import com.example.balaika.ui.composable.navigation.BalaikaNavHost
 import com.example.balaika.ui.composable.navigation.BalaikaTopAppBar
 import com.example.balaika.ui.enums.BalaikaScreen
-import com.example.balaika.ui.enums.BottomNavigationItem
+import com.example.balaika.ui.enums.TabNavigationItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,9 +36,6 @@ fun BalaikaApp(
             )
         }
     ) { innerPadding ->
-        // UiState definition.
-        // ...
-
         Column {
             BalaikaNavHost(
                 navController = navController,
@@ -47,8 +44,8 @@ fun BalaikaApp(
                     .weight(1f))
             BalaikaBottomNavigationBar(
                 currentScreen = currentScreen,
-                onTabPressed = { navigationItem: BottomNavigationItem -> navController.navigate(navigationItem.name) },
-                navigationItemContentList = listOf(BottomNavigationItem.Playroom, BottomNavigationItem.AllSongs, BottomNavigationItem.Settings)
+                onTabPressed = { navController.navigate(it.name) },
+                navigationItemContentList = TabNavigationItem.values().toList()
             )
         }
     }

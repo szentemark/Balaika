@@ -24,23 +24,19 @@ class NavigationTest {
     fun setupNavHost() {
         composeTestRule.setContent {
             navController = TestNavHostController(LocalContext.current).apply {
-                navigatorProvider.addNavigator(
-                    ComposeNavigator()
-                )
+                navigatorProvider.addNavigator(ComposeNavigator())
             }
             BalaikaApp(navController = navController)
         }
     }
 
     @Test
-    fun balaikaNavHost_startScreen_atPlayRoomDestination() {
+    fun balaikaNavHost_startScreen_atPlayRoomDestination() =
         navController.assertCurrentRouteName(BalaikaScreen.Playroom.name)
-    }
 
     @Test
-    fun balaikaNavHost_startScreen_backNavigationNotShown() {
+    fun balaikaNavHost_startScreen_backNavigationNotShown() =
         composeTestRule.onNodeWithContentDescriptionId(R.string.back_button).assertDoesNotExist()
-    }
 
     @Test
     fun balaikaNavHost_tapAllSongsTab_backNavigationShown() {

@@ -62,4 +62,41 @@ class NavigationTest {
         composeTestRule.onNodeWithContentDescriptionId(R.string.back_button).performClick()
         navController.assertCurrentRouteName(BalaikaScreen.Playroom.name)
     }
+
+    @Test
+    fun balaikaNavHost_playroomScreen_titleDisplayed() {
+        composeTestRule.assertHasNodeWithTextIdUnderParentWithTagId(
+            nodeTextId = R.string.page_playroom,
+            parentTagId = R.string.test_tag_top_app_bar
+        )
+    }
+
+    @Test
+    fun balaikaNavHost_allSongsScreen_titleDisplayed() {
+        composeTestRule.onNodeWithTagId(R.string.page_all_songs).performClick()
+        composeTestRule.assertHasNodeWithTextIdUnderParentWithTagId(
+            nodeTextId = R.string.page_all_songs,
+            parentTagId = R.string.test_tag_top_app_bar
+        )
+    }
+
+    @Test
+    fun balaikaNavHost_settingsScreen_titleDisplayed() {
+        composeTestRule.onNodeWithTagId(R.string.page_settings).performClick()
+        composeTestRule.assertHasNodeWithTextIdUnderParentWithTagId(
+            nodeTextId = R.string.page_settings,
+            parentTagId = R.string.test_tag_top_app_bar
+        )
+    }
+
+    @Test
+    fun balaikaNavHost_playroomScreen_songListDisplayed() {
+        composeTestRule.onNodeWithTagId(R.string.test_tag_song_list).assertExists()
+    }
+
+    @Test
+    fun balaikaNavHost_allSongsScreen_songListDisplayed() {
+        composeTestRule.onNodeWithTagId(R.string.page_all_songs).performClick()
+        composeTestRule.onNodeWithTagId(R.string.test_tag_song_list).assertExists()
+    }
 }

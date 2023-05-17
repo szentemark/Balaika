@@ -7,8 +7,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.balaika.R
 import com.example.balaika.ui.composable.navigation.BalaikaBottomNavigationBar
 import com.example.balaika.ui.composable.navigation.BalaikaNavHost
 import com.example.balaika.ui.composable.navigation.BalaikaTopAppBar
@@ -32,7 +35,9 @@ fun BalaikaApp(
             BalaikaTopAppBar(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                modifier = Modifier
+                    .testTag(stringResource(id = R.string.test_tag_top_app_bar))
             )
         }
     ) { innerPadding ->

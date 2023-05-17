@@ -3,9 +3,11 @@ package com.example.balaika.ui.composable.navigation
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.balaika.R
 import com.example.balaika.ui.composable.songlist.SongList
 import com.example.balaika.ui.enums.BalaikaScreen
 
@@ -23,10 +25,10 @@ fun BalaikaNavHost(
             SongList()
         }
         composable(route = BalaikaScreen.AllSongs.name) {
-            Text(text = "Hello AllSongs!")
+            SongList()
         }
         composable(route = BalaikaScreen.Settings.name) {
-            Text(text = "Hello Settings!")
+            Text(text = stringResource(id = R.string.dummy_settings_text))
         }
     }
 }

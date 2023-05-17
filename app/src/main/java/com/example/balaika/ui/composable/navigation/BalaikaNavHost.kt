@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.balaika.ui.composable.songlist.SongList
 import com.example.balaika.ui.enums.BalaikaScreen
 
 @Composable
@@ -19,7 +20,7 @@ fun BalaikaNavHost(
         modifier = modifier
     ) {
         composable(route = BalaikaScreen.Playroom.name) {
-            Text(text = "Hello Playroom!")
+            SongList()
         }
         composable(route = BalaikaScreen.AllSongs.name) {
             Text(text = "Hello AllSongs!")

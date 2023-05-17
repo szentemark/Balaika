@@ -45,6 +45,34 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="1708027941">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="R58M540E4SV" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung&#10; SM-A505FN" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1840857304">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="R58M540E4SV" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="samsung&#10; SM-A505FN" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -48,7 +49,8 @@ fun SongListItem(
                 Image(
                     painter = painterResource(id = R.drawable.gabymorenopostales),
                     contentDescription = null,
-                    modifier = Modifier.size(96.dp)
+                    modifier = Modifier
+                        .size(104.dp)
                         .clip(
                             CutCornerShape(
                                 topStart = 10.dp,
@@ -59,9 +61,12 @@ fun SongListItem(
                         )
                 )
                 Spacer(modifier = Modifier.width(12.dp))
-                Column {
+                Column(
+                    // verticalArrangement = Arrangement.SpaceEvenly
+                ) {
                     Text(text = songListItemData.title, style = MaterialTheme.typography.titleMedium)
                     Text(text = songListItemData.author, style = MaterialTheme.typography.bodyMedium)
+                    Spacer(modifier = Modifier.height(12.dp).weight(1f))
                     Text(text = songListItemData.lastPlayed, style = MaterialTheme.typography.bodySmall)
                     Text(text = songListItemData.averageLength, style = MaterialTheme.typography.bodySmall)
                 }

@@ -9,6 +9,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.balaika.R
 
+val LuckiestGuy = FontFamily(
+    Font(R.font.luckiest_guy)
+)
 val WixMadeForTextBold = FontFamily(
     Font(R.font.wix_made_for_text_bold)
 )
@@ -21,6 +24,12 @@ val WixMadeForTextRegular = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+    titleLarge = TextStyle(
+        fontFamily = LuckiestGuy,
+        fontWeight = FontWeight.Normal,
+        fontSize = 26.sp,
+        letterSpacing = 1.sp
+    ),
     titleMedium = TextStyle(
         fontFamily = WixMadeForTextBold,
         fontWeight = FontWeight.Bold,
@@ -29,13 +38,13 @@ val Typography = Typography(
     bodyMedium = TextStyle(
         fontFamily = WixMadeForTextRegular,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
+        fontSize = 16.sp
     ),
     bodySmall = TextStyle(
         fontFamily = WixMadeForTextItalic,
         fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Italic,
-        fontSize = 14.sp
+        fontSize = 12.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -43,6 +52,11 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = WixMadeForTextRegular,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     )
     /* Other default text styles to override
     titleLarge = TextStyle(

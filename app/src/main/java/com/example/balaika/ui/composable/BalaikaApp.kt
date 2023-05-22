@@ -49,7 +49,13 @@ fun BalaikaApp(
                     .weight(1f))
             BalaikaBottomNavigationBar(
                 currentScreen = currentScreen,
-                onTabPressed = { navController.navigate(it.name) },
+                onTabPressed = {
+                    if (it.name == TabNavigationItem.Playroom.name) {
+                        navController.popBackStack(TabNavigationItem.Playroom.name, false)
+                    } else {
+                        navController.navigate(it.name)
+                    }
+                },
                 navigationItemContentList = TabNavigationItem.values().toList()
             )
         }

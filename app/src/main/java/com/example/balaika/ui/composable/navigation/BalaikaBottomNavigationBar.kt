@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.sp
 import com.example.balaika.ui.enums.BalaikaScreen
 import com.example.balaika.ui.enums.TabNavigationItem
 
@@ -43,7 +42,8 @@ fun BalaikaBottomNavigationBar(
                 label = {
                     Text(
                         text = text,
-                        fontSize = 12.sp
+                        style = MaterialTheme.typography.labelSmall
+                        // fontSize = 12.sp
                     )
                 },
                 modifier = modifier.testTag(text),

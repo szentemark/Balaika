@@ -4,7 +4,7 @@ val dummySongListItemData = SongListItemData(
     title = "No soy el aire",
     author = "Gaby Moreno",
     lastPlayed = "Played: 2023.04.17",
-    averageLength = "Time: 3:45"
+    averageLength = "Length: 3:45"
 )
 
 val dummySongListData = listOf(

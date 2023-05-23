@@ -1,10 +1,12 @@
 package com.example.balaika.ui.composable.songlist
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,28 +25,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.balaika.R
 import com.example.balaika.ui.data.SongListItemData
+import com.example.balaika.ui.theme.WoodyCrayonWhiteFade
 
 @Composable
 fun SongListItem(
     songListItemData: SongListItemData
 ) {
     Card(
-        modifier = Modifier
-            .padding(horizontal = 12.dp, vertical = 6.dp)
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         shape = CardDefaults.elevatedShape,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 4.dp)
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.BottomEnd
         ) {
             Row(
-                verticalAlignment = Alignment.Top,
                 modifier = Modifier
                     .padding(12.dp)
-                    .fillMaxWidth()
+                    .fillMaxSize()
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.gabymorenopostales),
@@ -62,11 +62,11 @@ fun SongListItem(
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Column(
-                    // verticalArrangement = Arrangement.SpaceEvenly
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     Text(text = songListItemData.title, style = MaterialTheme.typography.titleMedium)
                     Text(text = songListItemData.author, style = MaterialTheme.typography.bodyMedium)
-                    Spacer(modifier = Modifier.height(12.dp).weight(1f))
+                    Spacer(modifier = Modifier.width(120.dp).height(17.dp).padding(vertical = 8.dp).background(WoodyCrayonWhiteFade))
                     Text(text = songListItemData.lastPlayed, style = MaterialTheme.typography.bodySmall)
                     Text(text = songListItemData.averageLength, style = MaterialTheme.typography.bodySmall)
                 }

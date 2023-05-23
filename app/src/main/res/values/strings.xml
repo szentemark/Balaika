@@ -3,6 +3,7 @@
 
     <string name="dummy_settings_text">Hello Settings!</string>
 
+    <string name="add_song_button">Add new song</string>
     <string name="back_button">Back</string>
 
     <string name="page_playroom">Playroom</string>

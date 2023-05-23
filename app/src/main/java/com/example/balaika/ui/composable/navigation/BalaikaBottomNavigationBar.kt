@@ -43,7 +43,6 @@ fun BalaikaBottomNavigationBar(
                     Text(
                         text = text,
                         style = MaterialTheme.typography.labelSmall
-                        // fontSize = 12.sp
                     )
                 },
                 modifier = modifier.testTag(text),

@@ -1,8 +1,10 @@
 package com.example.balaika.ui.composable.navigation
 
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,7 +12,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.sp
 import com.example.balaika.ui.enums.BalaikaScreen
 import com.example.balaika.ui.enums.TabNavigationItem
 
@@ -21,7 +22,10 @@ fun BalaikaBottomNavigationBar(
     navigationItemContentList: List<TabNavigationItem>,
     modifier: Modifier = Modifier
 ) {
-    NavigationBar(modifier = modifier) {
+    NavigationBar(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.primary
+    ) {
         for (navigationItem in navigationItemContentList) {
             val text = stringResource(id = navigationItem.screen.title)
             val image = ImageVector.vectorResource(id = navigationItem.icon)
@@ -38,10 +42,17 @@ fun BalaikaBottomNavigationBar(
                 label = {
                     Text(
                         text = text,
-                        fontSize = 12.sp
+                        style = MaterialTheme.typography.labelSmall
                     )
                 },
-                modifier = modifier.testTag(text)
+                modifier = modifier.testTag(text),
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    indicatorColor = MaterialTheme.colorScheme.primary,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
+                )
             )
         }
     }

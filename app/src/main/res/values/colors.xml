@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="cherry_crayon_white">#FFF0E0C0</color>
+    <color name="woody_crayon_white_28">#28E8D4B4</color>
+    <color name="woody_crayon_white_80">#80E8D4B4</color>
 </resources>

@@ -41,9 +41,9 @@ val Typography = Typography(
         fontSize = 16.sp
     ),
     bodySmall = TextStyle(
-        fontFamily = WixMadeForTextItalic,
+        fontFamily = WixMadeForTextRegular,
         fontWeight = FontWeight.Normal,
-        fontStyle = FontStyle.Italic,
+        fontStyle = FontStyle.Normal,
         fontSize = 12.sp
     ),
     bodyLarge = TextStyle(

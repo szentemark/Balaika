@@ -8,12 +8,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.balaika.R
+import com.example.balaika.ui.composable.editor.SongEditor
 import com.example.balaika.ui.composable.songlist.SongList
 import com.example.balaika.ui.enums.BalaikaScreen
 
 @Composable
 fun BalaikaNavHost(
     navController: NavHostController,
+    startEditing: () -> Unit,
     modifier: Modifier
 ) {
     NavHost(
@@ -22,13 +24,16 @@ fun BalaikaNavHost(
         modifier = modifier
     ) {
         composable(route = BalaikaScreen.Playroom.name) {
-            SongList()
+            SongList(onClickListItem = {  })
         }
         composable(route = BalaikaScreen.AllSongs.name) {
-            SongList()
+            SongList(onClickListItem = { startEditing() })
         }
         composable(route = BalaikaScreen.Settings.name) {
             Text(text = stringResource(id = R.string.dummy_settings_text))
+        }
+        composable(route = BalaikaScreen.SongEditor.name) {
+            SongEditor()
         }
     }
 }

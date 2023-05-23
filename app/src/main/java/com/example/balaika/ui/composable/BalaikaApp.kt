@@ -62,7 +62,7 @@ fun BalaikaApp(
         floatingActionButton = {
             if (currentScreen == BalaikaScreen.AllSongs) {
                 FloatingActionButton(
-                    onClick = { },
+                    onClick = { navController.navigate(BalaikaScreen.SongEditor.name) },
                     containerColor = CherryBrown,
                     contentColor = CherryCrayonWhite
                 ) {
@@ -77,6 +77,7 @@ fun BalaikaApp(
     ) { innerPadding ->
         BalaikaNavHost(
             navController = navController,
+            startEditing = { navController.navigate(BalaikaScreen.SongEditor.name) },
             modifier = modifier.padding(innerPadding)
         )
     }

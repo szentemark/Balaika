@@ -11,6 +11,9 @@
     <string name="editor_left_hand_heavy">Left hand heavy</string>
     <string name="editor_pick">Uses a pick</string>
     <string name="editor_playroom_ready">Appears in playroom</string>
+    <string name="editor_scrumming_mixed">mixed</string>
+    <string name="editor_scrumming_scrum">scrum</string>
+    <string name="editor_scrumming_split">split</string>
     <string name="editor_title">Title</string>
 
     <string name="page_playroom">Playroom</string>

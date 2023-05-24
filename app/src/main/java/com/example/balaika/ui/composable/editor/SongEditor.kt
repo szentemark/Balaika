@@ -2,13 +2,11 @@ package com.example.balaika.ui.composable.editor
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.balaika.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SongEditor() {
     Column(
@@ -27,14 +25,20 @@ fun SongEditor() {
             value = "Gaby Moreno",
             onValueChange = {  }
         )
-        // TODO scrumming - 1-3 value
+        // scrumming
+        val scrummingOptions = mapOf(
+            1 to R.string.editor_scrumming_split,
+            2 to R.string.editor_scrumming_mixed,
+            3 to R.string.editor_scrumming_scrum
+        )
+        RadioRow(options = scrummingOptions, selectedValue = 1) { }
         // pick
-        SwitchRow(label = R.string.editor_pick) {  }
+        SwitchRow(label = R.string.editor_pick, true) {  }
         // left hand heavy
-        SwitchRow(label = R.string.editor_left_hand_heavy) {  }
+        SwitchRow(label = R.string.editor_left_hand_heavy, false) {  }
         // feature song
-        SwitchRow(label = R.string.editor_feature_song) {  }
+        SwitchRow(label = R.string.editor_feature_song, false) {  }
         // show in playroom
-        SwitchRow(label = R.string.editor_playroom_ready) {  }
+        SwitchRow(label = R.string.editor_playroom_ready, false) {  }
     }
 }

@@ -12,7 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.balaika.ui.theme.WoodyCrayonWhite
+import com.example.balaika.ui.theme.DarkBrownCrayonCream
+import com.example.balaika.ui.theme.DarkBrownCrayonDark
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,11 +29,11 @@ fun TextRow(
         value = value,
         onValueChange = onValueChange,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = WoodyCrayonWhite,
-            unfocusedBorderColor = WoodyCrayonWhite,
-            focusedLabelColor = WoodyCrayonWhite,
-            unfocusedLabelColor = WoodyCrayonWhite,
-            textColor = WoodyCrayonWhite
+            focusedBorderColor = DarkBrownCrayonCream,
+            unfocusedBorderColor = DarkBrownCrayonDark,
+            focusedLabelColor = DarkBrownCrayonCream,
+            unfocusedLabelColor = DarkBrownCrayonCream,
+            textColor = DarkBrownCrayonCream
         ),
         shape = RoundedCornerShape(24.dp),
         modifier = Modifier

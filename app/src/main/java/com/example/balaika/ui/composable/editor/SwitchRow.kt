@@ -7,17 +7,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.balaika.ui.theme.WoodyCrayonWhite
+import com.example.balaika.ui.theme.DarkBrown
+import com.example.balaika.ui.theme.DarkBrownCrayonCream
+import com.example.balaika.ui.theme.DarkBrownCrayonDark
 
 @Composable
 fun SwitchRow(
     @StringRes label: Int,
+    checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
     Row(
@@ -29,12 +33,17 @@ fun SwitchRow(
     ) {
         Text(
             text = stringResource(id = label),
-            color = WoodyCrayonWhite,
+            color = DarkBrownCrayonCream,
             style = MaterialTheme.typography.bodyMedium
         )
         Switch(
-            checked = false,
-            onCheckedChange = onCheckedChange
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            colors = SwitchDefaults.colors(
+                uncheckedTrackColor = DarkBrown,
+                uncheckedBorderColor = DarkBrownCrayonDark,
+                uncheckedThumbColor = DarkBrownCrayonCream
+            )
         )
     }
 }

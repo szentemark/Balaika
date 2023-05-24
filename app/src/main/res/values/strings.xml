@@ -6,9 +6,20 @@
     <string name="add_song_button">Add new song</string>
     <string name="back_button">Back</string>
 
+    <string name="editor_author">Author</string>
+    <string name="editor_feature_song">Feature song</string>
+    <string name="editor_left_hand_heavy">Left hand heavy</string>
+    <string name="editor_pick">Uses a pick</string>
+    <string name="editor_playroom_ready">Appears in playroom</string>
+    <string name="editor_scrumming_mixed">mixed</string>
+    <string name="editor_scrumming_scrum">scrum</string>
+    <string name="editor_scrumming_split">split</string>
+    <string name="editor_title">Title</string>
+
     <string name="page_playroom">Playroom</string>
     <string name="page_all_songs">All songs</string>
     <string name="page_settings">Settings</string>
+    <string name="page_song_editor">Song editor</string>
 
     <string name="test_tag_song_list">Song list</string>
     <string name="test_tag_top_app_bar">Top app bar</string>

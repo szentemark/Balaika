@@ -60,21 +60,24 @@ fun BalaikaApp(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {  },
-                containerColor = CherryBrown,
-                contentColor = CherryCrayonWhite
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.baseline_add_24),
-                    contentDescription = stringResource(id = R.string.add_song_button)
-                )
+            if (currentScreen == BalaikaScreen.AllSongs) {
+                FloatingActionButton(
+                    onClick = { navController.navigate(BalaikaScreen.SongEditor.name) },
+                    containerColor = CherryBrown,
+                    contentColor = CherryCrayonWhite
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.baseline_add_24),
+                        contentDescription = stringResource(id = R.string.add_song_button)
+                    )
+                }
             }
         },
         floatingActionButtonPosition = FabPosition.End
     ) { innerPadding ->
         BalaikaNavHost(
             navController = navController,
+            startEditing = { navController.navigate(BalaikaScreen.SongEditor.name) },
             modifier = modifier.padding(innerPadding)
         )
     }

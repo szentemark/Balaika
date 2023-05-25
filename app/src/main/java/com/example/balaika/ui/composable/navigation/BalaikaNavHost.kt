@@ -11,9 +11,11 @@ import com.example.balaika.R
 import com.example.balaika.ui.composable.editor.SongEditor
 import com.example.balaika.ui.composable.songlist.SongList
 import com.example.balaika.ui.enums.BalaikaScreen
+import com.example.balaika.ui.viewmodel.BalaikaViewModel
 
 @Composable
 fun BalaikaNavHost(
+    viewModel: BalaikaViewModel,
     navController: NavHostController,
     startEditing: () -> Unit,
     modifier: Modifier
@@ -33,7 +35,7 @@ fun BalaikaNavHost(
             Text(text = stringResource(id = R.string.dummy_settings_text))
         }
         composable(route = BalaikaScreen.SongEditor.name) {
-            SongEditor()
+            SongEditor(viewModel = viewModel)
         }
     }
 }

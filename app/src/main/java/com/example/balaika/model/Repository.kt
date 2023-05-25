@@ -9,7 +9,7 @@ class Repository(private val database: BalaikaDatabase) {
 
     fun getAllSongs(): Flow<List<Song>> = database.songDao().getAll()
 
-    fun insert(song: Song) = database.songDao().insert(song)
+    fun insert(song: Song) = song.copy(id = database.songDao().insert(song).toInt())
 
     fun update(song: Song) = database.songDao().update(song)
 

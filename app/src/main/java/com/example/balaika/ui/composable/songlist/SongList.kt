@@ -11,10 +11,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.balaika.R
 import com.example.balaika.ui.data.SongListItemData
-import com.example.balaika.ui.data.dummySongListData
 
 @Composable
 fun SongList(
+    songList: List<SongListItemData>,
     onClickListItem: (SongListItemData) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -24,7 +24,7 @@ fun SongList(
         modifier = modifier
             .testTag(stringResource(id = R.string.test_tag_song_list))
     ) {
-        items(dummySongListData) {
+        items(songList) {
             SongListItem(songListItemData = it, onClick = onClickListItem)
         }
     }

@@ -4,16 +4,32 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.balaika.model.Repository
 import com.example.balaika.model.room.entity.Song
+import com.example.balaika.ui.data.SongListItemData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BalaikaViewModel(private val repository: Repository): ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState(editedSong = newSong()))
+    private val _uiState = MutableStateFlow(UiState(allSongs = listOf(), editedSong = newSong()))
     val uiState: StateFlow<UiState> = _uiState
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.getAllSongs().collectLatest {
+                val allSongs = it.map { song -> SongListItemData(
+                    title = song.title,
+                    author = song.author,
+                    lastPlayed = "Played: -",
+                    averageLength = "Length: -"
+                ) }
+                _uiState.update { uiState -> uiState.copy(allSongs = allSongs) }
+            }
+        }
+    }
 
     fun createSong(callback: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {

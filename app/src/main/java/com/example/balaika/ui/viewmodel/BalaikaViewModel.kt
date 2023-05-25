@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class BalaikaViewModel(private val repository: Repository): ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState(allSongs = listOf(), editedSong = newSong()))
+    private val _uiState = MutableStateFlow(UiState(allSongs = listOf(), editedSong = newSong(), newlyCreatedSong = true))
     val uiState: StateFlow<UiState> = _uiState
 
     init {
@@ -34,12 +34,12 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
 
     fun createSong(callback: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.update { it.copy(editedSong = repository.insert(newSong())) }
+            _uiState.update { it.copy(editedSong = repository.insert(newSong()), newlyCreatedSong = true) }
             callback()
         }
     }
 
-    fun startEditingSong(song: Song) = _uiState.update { it.copy(editedSong = song) }
+    fun startEditingSong(song: Song) = _uiState.update { it.copy(editedSong = song, newlyCreatedSong = false) }
 
     fun updateSong(updateFunction: (Song) -> Song) {
         _uiState.update { it.copy(editedSong = updateFunction(it.editedSong)) }

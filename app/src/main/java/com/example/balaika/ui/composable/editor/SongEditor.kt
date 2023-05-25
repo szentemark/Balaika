@@ -3,29 +3,46 @@ package com.example.balaika.ui.composable.editor
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.input.ImeAction
 import com.example.balaika.R
 import com.example.balaika.model.room.entity.Song
 import com.example.balaika.ui.viewmodel.BalaikaViewModel
 
 @Composable
-fun SongEditor(song: Song, viewModel: BalaikaViewModel) {
+fun SongEditor(
+    song: Song,
+    newlyCreatedSong: Boolean,
+    viewModel: BalaikaViewModel
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
+        val focusRequester = remember { FocusRequester() }
         // title
         TextRow(
             label = R.string.editor_title,
             value = song.title,
-            onValueChange = { viewModel.updateSong { song -> song.copy(title = it) } }
+            onValueChange = { viewModel.updateSong { song -> song.copy(title = it.trim()) } },
+            modifier = Modifier.focusRequester(focusRequester)
         )
+        if (newlyCreatedSong) {
+            LaunchedEffect(Unit) {
+                focusRequester.requestFocus()
+            }
+        }
         // author
         TextRow(
             label = R.string.editor_author,
             value = song.author,
-            onValueChange = { viewModel.updateSong { song -> song.copy(author = it) } }
+            imeAction = ImeAction.Done,
+            onValueChange = { viewModel.updateSong { song -> song.copy(author = it.trim()) } }
         )
         // scrumming
         val scrummingOptions = mapOf(

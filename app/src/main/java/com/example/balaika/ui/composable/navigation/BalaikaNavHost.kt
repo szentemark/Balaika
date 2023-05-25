@@ -30,16 +30,26 @@ fun BalaikaNavHost(
         modifier = modifier
     ) {
         composable(route = BalaikaScreen.Playroom.name) {
-            SongList(songList = uiState.allSongs, onClickListItem = {  })
+            SongList(
+                songList = uiState.allSongs,
+                onClickListItem = {  }
+            )
         }
         composable(route = BalaikaScreen.AllSongs.name) {
-            SongList(songList = uiState.allSongs, onClickListItem = { startEditing(it.song) })
+            SongList(
+                songList = uiState.allSongs,
+                onClickListItem = { startEditing(it.song) }
+            )
         }
         composable(route = BalaikaScreen.Settings.name) {
             Text(text = stringResource(id = R.string.dummy_settings_text))
         }
         composable(route = BalaikaScreen.SongEditor.name) {
-            SongEditor(song = uiState.editedSong, viewModel = viewModel)
+            SongEditor(
+                song = uiState.editedSong,
+                newlyCreatedSong = uiState.newlyCreatedSong,
+                viewModel = viewModel
+            )
         }
     }
 }

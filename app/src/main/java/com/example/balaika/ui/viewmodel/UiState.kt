@@ -5,5 +5,6 @@ import com.example.balaika.ui.data.SongListItemData
 
 data class UiState (
     val allSongs: List<SongListItemData>,
-    val editedSong: Song
+    val editedSong: Song,
+    val newlyCreatedSong: Boolean
 )

@@ -1,5 +1,6 @@
 package com.example.balaika.ui.composable.editor
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.RadioButton
@@ -34,7 +35,8 @@ fun RadioRow(
             )
             Text(
                 text = stringResource(id = it.value),
-                color = DarkBrownCrayonCream
+                color = DarkBrownCrayonCream,
+                modifier = Modifier.clickable { onSelect(it.key) }
             )
         }
     }

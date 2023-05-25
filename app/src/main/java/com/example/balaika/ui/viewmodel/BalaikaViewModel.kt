@@ -21,6 +21,7 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAllSongs().collectLatest {
                 val allSongs = it.map { song -> SongListItemData(
+                    song = song,
                     title = song.title,
                     author = song.author,
                     lastPlayed = "Played: -",
@@ -37,6 +38,8 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
             callback()
         }
     }
+
+    fun startEditingSong(song: Song) = _uiState.update { it.copy(editedSong = song) }
 
     fun updateSong(updateFunction: (Song) -> Song) {
         _uiState.update { it.copy(editedSong = updateFunction(it.editedSong)) }

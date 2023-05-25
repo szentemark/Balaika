@@ -101,7 +101,10 @@ fun BalaikaApp(
         BalaikaNavHost(
             viewModel = viewModel,
             navController = navController,
-            startEditing = { navController.navigate(BalaikaScreen.SongEditor.name) },
+            startEditing = {
+                viewModel.startEditingSong(it)
+                navController.navigate(BalaikaScreen.SongEditor.name)
+            },
             modifier = modifier.padding(innerPadding)
         )
     }

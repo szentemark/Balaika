@@ -16,6 +16,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.balaika.R
+import com.example.balaika.calculateImageFilePath
 import com.example.balaika.model.room.entity.Song
 import com.example.balaika.ui.viewmodel.BalaikaViewModel
 
@@ -56,8 +57,9 @@ fun SongEditor(
         Spacer(modifier = Modifier.size(36.dp))
         // image
         ImageRow(
-            imageFileName = song.imageFile
-        ) { viewModel.updateSong { song -> song.copy(imageFile = "$COVER_IMAGES_DIRECTORY/test.jpg") } }
+            imageFileName = song.imageFile,
+            song = song,
+        ) { viewModel.updateSong { song -> song.copy(imageFile = song.calculateImageFilePath()) } }
         Spacer(modifier = Modifier.size(24.dp))
         // scrumming
         val scrummingOptions = mapOf(

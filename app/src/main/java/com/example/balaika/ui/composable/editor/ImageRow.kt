@@ -20,17 +20,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.balaika.COVER_IMAGES_DIRECTORY
 import com.example.balaika.R
+import com.example.balaika.calculateImageFilePath
+import com.example.balaika.model.room.entity.Song
 import com.example.balaika.ui.theme.DarkBrownCrayonDark
 import java.io.File
 
-const val COVER_IMAGES_DIRECTORY = "cover_images"
-
 @Composable
-fun ImageRow(imageFileName: String, onImageSaved: () -> Unit) {
+fun ImageRow(imageFileName: String, song: Song, onImageSaved: () -> Unit) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        pickImage(context, uri, onImageSaved)
+        pickImage(context, uri, song, onImageSaved)
     }
 
     val painter = if (imageFileName != "") {
@@ -63,7 +64,7 @@ fun ImageRow(imageFileName: String, onImageSaved: () -> Unit) {
     }
 }
 
-private fun pickImage(context: Context, uri: Uri?, onImageSaved: () -> Unit) {
+private fun pickImage(context: Context, uri: Uri?, song: Song, onImageSaved: () -> Unit) {
     uri?.let {
         // Read content from uri and write content to local file.
         context.contentResolver.openInputStream(uri)?.let { inputStream ->
@@ -73,7 +74,7 @@ private fun pickImage(context: Context, uri: Uri?, onImageSaved: () -> Unit) {
                 coverImagesDirectory.mkdir()
             }
             // Save the cover image file.
-            val outputStream = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "$COVER_IMAGES_DIRECTORY/test.jpg").outputStream()
+            val outputStream = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), song.calculateImageFilePath()).outputStream()
             val buf = ByteArray(1024)
             var len: Int
             while (inputStream.read(buf).also { len = it } > 0) {

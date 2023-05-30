@@ -17,6 +17,7 @@ import com.example.balaika.ui.data.SongListItemData
 fun SongList(
     songList: List<SongListItemData>,
     highlightedSong: Song?,
+    currentPlayLength: String,
     onClickListItem: (SongListItemData) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -27,7 +28,12 @@ fun SongList(
             .testTag(stringResource(id = R.string.test_tag_song_list))
     ) {
         items(songList) {
-            SongListItem(songListItemData = it, isHighlighted = it.song.id == highlightedSong?.id, onClick = onClickListItem)
+            SongListItem(
+                songListItemData = it,
+                isHighlighted = it.song.id == highlightedSong?.id,
+                currentPlayLength = if (it.song.id == highlightedSong?.id) currentPlayLength else "",
+                onClick = onClickListItem
+            )
         }
     }
 }

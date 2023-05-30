@@ -33,6 +33,7 @@ fun BalaikaNavHost(
             SongList(
                 songList = uiState.allSongs,
                 highlightedSong = uiState.currentlyPlayedSong,
+                currentPlayLength = uiState.currentPlayLength,
                 onClickListItem = { viewModel.startStopSong(it.song) }
             )
         }
@@ -40,6 +41,7 @@ fun BalaikaNavHost(
             SongList(
                 songList = uiState.allSongs,
                 highlightedSong = null,
+                currentPlayLength = "",
                 onClickListItem = { startEditing(it.song) }
             )
         }

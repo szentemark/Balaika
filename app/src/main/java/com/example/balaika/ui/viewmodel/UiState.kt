@@ -9,5 +9,6 @@ data class UiState (
     val editedSong: Song,
     val newlyCreatedSong: Boolean,
     val currentlyPlayedSong: Song? = null,
-    val currentPlayStart: ZonedDateTime? = null
+    val currentPlayStart: ZonedDateTime? = null,
+    val currentPlayLength: String = ""
 )

@@ -39,6 +39,7 @@ import java.io.File
 fun SongListItem(
     songListItemData: SongListItemData,
     isHighlighted: Boolean,
+    currentPlayLength: String,
     onClick: (SongListItemData) -> Unit
 ) {
     Card(
@@ -89,7 +90,8 @@ fun SongListItem(
                     Text(text = songListItemData.author, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondary)
                     Spacer(modifier = Modifier.width(120.dp).height(17.dp).padding(vertical = 8.dp).background(WoodyCrayonWhiteFade))
                     Text(text = songListItemData.lastPlayed, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
-                    Text(text = songListItemData.averageLength, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
+                    val lengthString = if (isHighlighted && currentPlayLength == "") songListItemData.averageLength else "Length: $currentPlayLength"
+                    Text(text = lengthString, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
                 }
             }
             Image(painter = painterResource(id = R.drawable.guitar_string_decoration), contentDescription = null)

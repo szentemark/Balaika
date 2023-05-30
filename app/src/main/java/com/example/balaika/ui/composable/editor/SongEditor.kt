@@ -58,8 +58,8 @@ fun SongEditor(
         // image
         ImageRow(
             song = song
-        ) { timestamp ->
-            viewModel.updateSong { song -> song.copy(imageFile = song.calculateImageFilePath(timestamp)) }
+        ) { timestamp, extension ->
+            viewModel.updateSong { song -> song.copy(imageFile = song.calculateImageFilePath(timestamp, extension)) }
         }
         Spacer(modifier = Modifier.size(24.dp))
         // scrumming

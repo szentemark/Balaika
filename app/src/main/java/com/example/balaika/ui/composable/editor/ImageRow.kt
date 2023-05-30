@@ -24,6 +24,8 @@ import com.example.balaika.R
 import com.example.balaika.ui.theme.DarkBrownCrayonDark
 import java.io.File
 
+const val COVER_IMAGES_DIRECTORY = "cover_images"
+
 @Composable
 fun ImageRow(imageFileName: String, onImageSaved: () -> Unit) {
     val context = LocalContext.current
@@ -65,7 +67,13 @@ private fun pickImage(context: Context, uri: Uri?, onImageSaved: () -> Unit) {
     uri?.let {
         // Read content from uri and write content to local file.
         context.contentResolver.openInputStream(uri)?.let { inputStream ->
-            val outputStream = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "test.jpg").outputStream()
+            // If the cover images directory doesn't exist, we create it.
+            val coverImagesDirectory = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), COVER_IMAGES_DIRECTORY)
+            if (!coverImagesDirectory.exists()) {
+                coverImagesDirectory.mkdir()
+            }
+            // Save the cover image file.
+            val outputStream = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "$COVER_IMAGES_DIRECTORY/test.jpg").outputStream()
             val buf = ByteArray(1024)
             var len: Int
             while (inputStream.read(buf).also { len = it } > 0) {

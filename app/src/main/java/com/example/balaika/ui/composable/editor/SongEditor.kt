@@ -57,7 +57,7 @@ fun SongEditor(
         // image
         ImageRow(
             imageFileName = song.imageFile
-        ) { viewModel.updateSong { song -> song.copy(imageFile = "test.jpg") } }
+        ) { viewModel.updateSong { song -> song.copy(imageFile = "$COVER_IMAGES_DIRECTORY/test.jpg") } }
         Spacer(modifier = Modifier.size(24.dp))
         // scrumming
         val scrummingOptions = mapOf(

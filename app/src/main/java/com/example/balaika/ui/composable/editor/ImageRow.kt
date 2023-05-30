@@ -26,16 +26,17 @@ import com.example.balaika.calculateImageFilePath
 import com.example.balaika.model.room.entity.Song
 import com.example.balaika.ui.theme.DarkBrownCrayonDark
 import java.io.File
+import java.time.ZonedDateTime
 
 @Composable
-fun ImageRow(imageFileName: String, song: Song, onImageSaved: () -> Unit) {
+fun ImageRow(song: Song, onImageSaved: (Long) -> Unit) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         pickImage(context, uri, song, onImageSaved)
     }
 
-    val painter = if (imageFileName != "") {
-        val imageFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), imageFileName)
+    val painter = if (song.imageFile != "") {
+        val imageFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), song.imageFile)
         rememberAsyncImagePainter(imageFile)
     } else {
         painterResource(id = R.drawable.image_placeholder)
@@ -64,7 +65,7 @@ fun ImageRow(imageFileName: String, song: Song, onImageSaved: () -> Unit) {
     }
 }
 
-private fun pickImage(context: Context, uri: Uri?, song: Song, onImageSaved: () -> Unit) {
+private fun pickImage(context: Context, uri: Uri?, song: Song, onImageSaved: (Long) -> Unit) {
     uri?.let {
         // Read content from uri and write content to local file.
         context.contentResolver.openInputStream(uri)?.let { inputStream ->
@@ -74,7 +75,8 @@ private fun pickImage(context: Context, uri: Uri?, song: Song, onImageSaved: () 
                 coverImagesDirectory.mkdir()
             }
             // Save the cover image file.
-            val outputStream = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), song.calculateImageFilePath()).outputStream()
+            val timestamp = ZonedDateTime.now().toInstant().toEpochMilli()
+            val outputStream = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), song.calculateImageFilePath(timestamp)).outputStream()
             val buf = ByteArray(1024)
             var len: Int
             while (inputStream.read(buf).also { len = it } > 0) {
@@ -83,7 +85,7 @@ private fun pickImage(context: Context, uri: Uri?, song: Song, onImageSaved: () 
             outputStream.close()
             inputStream.close()
             // Save file location in Room.
-            onImageSaved()
+            onImageSaved(timestamp)
         }
     }
 }

@@ -57,9 +57,10 @@ fun SongEditor(
         Spacer(modifier = Modifier.size(36.dp))
         // image
         ImageRow(
-            imageFileName = song.imageFile,
-            song = song,
-        ) { viewModel.updateSong { song -> song.copy(imageFile = song.calculateImageFilePath()) } }
+            song = song
+        ) { timestamp ->
+            viewModel.updateSong { song -> song.copy(imageFile = song.calculateImageFilePath(timestamp)) }
+        }
         Spacer(modifier = Modifier.size(24.dp))
         // scrumming
         val scrummingOptions = mapOf(

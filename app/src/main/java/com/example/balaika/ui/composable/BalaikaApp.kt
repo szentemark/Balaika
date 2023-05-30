@@ -29,6 +29,10 @@ import com.example.balaika.ui.enums.BalaikaScreen
 import com.example.balaika.ui.enums.TabNavigationItem
 import com.example.balaika.ui.theme.CherryBrown
 import com.example.balaika.ui.theme.CherryCrayonWhite
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,8 +43,9 @@ fun BalaikaApp(
     val context = LocalContext.current.applicationContext
     val database = BalaikaDatabase.getDatabase(context)
     val repository = Repository(database)
-    val viewModel: BalaikaViewModel = viewModel { BalaikaViewModelFactory(repository).create(
-        BalaikaViewModel::class.java) }
+    val viewModel: BalaikaViewModel = viewModel {
+        BalaikaViewModelFactory(repository).create(BalaikaViewModel::class.java)
+    }
 
     val backStackEntry by navController.currentBackStackEntryAsState()
 
@@ -74,7 +79,13 @@ fun BalaikaApp(
         floatingActionButton = {
             if (currentScreen == BalaikaScreen.AllSongs) {
                 FloatingActionButton(
-                    onClick = { navController.navigate(BalaikaScreen.SongEditor.name) },
+                    onClick = {
+                        viewModel.createSong {
+                            CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
+                                navController.navigate(BalaikaScreen.SongEditor.name)
+                            }
+                        }
+                    },
                     containerColor = CherryBrown,
                     contentColor = CherryCrayonWhite
                 ) {
@@ -88,8 +99,12 @@ fun BalaikaApp(
         floatingActionButtonPosition = FabPosition.End
     ) { innerPadding ->
         BalaikaNavHost(
+            viewModel = viewModel,
             navController = navController,
-            startEditing = { navController.navigate(BalaikaScreen.SongEditor.name) },
+            startEditing = {
+                viewModel.startEditingSong(it)
+                navController.navigate(BalaikaScreen.SongEditor.name)
+            },
             modifier = modifier.padding(innerPadding)
         )
     }

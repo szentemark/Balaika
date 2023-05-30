@@ -13,7 +13,7 @@ interface SongDao {
     fun getAll(): Flow<List<Song>>
 
     @Insert
-    fun insert(song: Song)
+    fun insert(song: Song): Long
 
     @Update
     fun update(song: Song)

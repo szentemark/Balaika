@@ -1,5 +1,6 @@
 package com.example.balaika.ui.composable.songlist
 
+import android.os.Environment
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,11 +23,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.balaika.R
 import com.example.balaika.ui.data.SongListItemData
 import com.example.balaika.ui.theme.WoodyCrayonWhiteFade
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,9 +55,17 @@ fun SongListItem(
                     .padding(12.dp)
                     .fillMaxSize()
             ) {
+                val painter = if (songListItemData.song.imageFile != "") {
+                    val context = LocalContext.current
+                    val imageFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), songListItemData.song.imageFile)
+                    rememberAsyncImagePainter(imageFile)
+                } else {
+                    painterResource(id = R.drawable.image_placeholder)
+                }
                 Image(
-                    painter = painterResource(id = R.drawable.gabymorenopostales),
+                    painter = painter,
                     contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(104.dp)
                         .clip(

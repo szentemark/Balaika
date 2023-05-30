@@ -35,7 +35,7 @@ fun ImageRow(imageFileName: String, onImageSaved: () -> Unit) {
         val imageFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), imageFileName)
         rememberAsyncImagePainter(imageFile)
     } else {
-        painterResource(id = R.drawable.gabymorenopostales)
+        painterResource(id = R.drawable.image_placeholder)
     }
     Card(
         shape = RoundedCornerShape(size = 20.dp),

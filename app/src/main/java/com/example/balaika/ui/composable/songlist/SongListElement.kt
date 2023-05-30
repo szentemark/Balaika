@@ -60,7 +60,7 @@ fun SongListItem(
                     val imageFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), songListItemData.song.imageFile)
                     rememberAsyncImagePainter(imageFile)
                 } else {
-                    painterResource(id = R.drawable.gabymorenopostales)
+                    painterResource(id = R.drawable.image_placeholder)
                 }
                 Image(
                     painter = painter,

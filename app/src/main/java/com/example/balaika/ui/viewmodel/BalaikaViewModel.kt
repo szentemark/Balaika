@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 
 class BalaikaViewModel(private val repository: Repository): ViewModel() {
 
@@ -45,6 +46,22 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         _uiState.update { it.copy(editedSong = updateFunction(it.editedSong)) }
         viewModelScope.launch(Dispatchers.IO) {
             repository.update(_uiState.value.editedSong)
+        }
+    }
+
+    fun startStopSong(song: Song) {
+        when (_uiState.value.currentlyPlayedSong?.id) {
+            song.id -> {
+                // Stop the currently playing song.
+                _uiState.update { it.copy(currentlyPlayedSong = null, currentPlayStart = null) }
+            }
+            null -> {
+                // Start playing the selected song.
+                _uiState.update { it.copy(currentlyPlayedSong = song, currentPlayStart = ZonedDateTime.now()) }
+            }
+            else -> {
+                // The user tapped a song while playing another one, we do nothing.
+            }
         }
     }
 

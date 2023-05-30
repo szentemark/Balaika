@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.balaika.R
 import com.example.balaika.ui.data.SongListItemData
+import com.example.balaika.ui.theme.WoodyBrownHighlighted
 import com.example.balaika.ui.theme.WoodyCrayonWhiteFade
 import java.io.File
 
@@ -37,12 +38,15 @@ import java.io.File
 @Composable
 fun SongListItem(
     songListItemData: SongListItemData,
+    isHighlighted: Boolean,
     onClick: (SongListItemData) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = CardDefaults.elevatedShape,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isHighlighted) WoodyBrownHighlighted else MaterialTheme.colorScheme.secondary
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 4.dp),
         onClick = { onClick(songListItemData) }
     ) {
@@ -81,11 +85,11 @@ fun SongListItem(
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Text(text = songListItemData.title, style = MaterialTheme.typography.titleMedium)
-                    Text(text = songListItemData.author, style = MaterialTheme.typography.bodyMedium)
+                    Text(text = songListItemData.title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondary)
+                    Text(text = songListItemData.author, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondary)
                     Spacer(modifier = Modifier.width(120.dp).height(17.dp).padding(vertical = 8.dp).background(WoodyCrayonWhiteFade))
-                    Text(text = songListItemData.lastPlayed, style = MaterialTheme.typography.bodySmall)
-                    Text(text = songListItemData.averageLength, style = MaterialTheme.typography.bodySmall)
+                    Text(text = songListItemData.lastPlayed, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
+                    Text(text = songListItemData.averageLength, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
                 }
             }
             Image(painter = painterResource(id = R.drawable.guitar_string_decoration), contentDescription = null)

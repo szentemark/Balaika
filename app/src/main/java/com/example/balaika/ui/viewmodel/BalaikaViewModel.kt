@@ -3,6 +3,7 @@ package com.example.balaika.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.balaika.mmSs
+import com.example.balaika.model.BalaikaDataStore
 import com.example.balaika.model.Repository
 import com.example.balaika.model.room.entity.Play
 import com.example.balaika.model.room.entity.Song
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.ZonedDateTime
@@ -25,7 +27,14 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         // Load all songs list from repository.
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAllSongs().collectLatest {
-                val playroomSongs = it.filter { song -> song.showInPlayroom }.sortedBy { song -> song.lastPlayed }
+                val playroomSongs = it
+                    .asSequence()
+                    .filter { song -> song.showInPlayroom }
+                    .filter { song -> song.featureSong || !_uiState.value.setupFeatureOnly }
+                    .filter { song -> !song.pick || !_uiState.value.setupHandPickOnly }
+                    .filter { song -> song.scrumming < 3 || !_uiState.value.setupNoScrumming }
+                    .sortedBy { song -> song.lastPlayed }
+                    .toList()
                 _uiState.update { uiState -> uiState.copy(allSongs = it, playroomSongs = playroomSongs) }
             }
         }
@@ -39,6 +48,36 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
                 }
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setupValues[BalaikaDataStore.DataType.FEATURE_ONLY]?.collect { newValue ->
+                val newUiState = _uiState.updateAndGet { it.copy(setupFeatureOnly = newValue) }
+                updatePlayroomSongList(newUiState)
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setupValues[BalaikaDataStore.DataType.HAND_PICK_ONLY]?.collect { newValue ->
+                val newUiState = _uiState.updateAndGet { it.copy(setupHandPickOnly = newValue) }
+                updatePlayroomSongList(newUiState)
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setupValues[BalaikaDataStore.DataType.NO_SCRUMMING]?.collect { newValue ->
+                val newUiState = _uiState.updateAndGet { it.copy(setupNoScrumming = newValue) }
+                updatePlayroomSongList(newUiState)
+            }
+        }
+    }
+
+    private fun updatePlayroomSongList(uiState: UiState) {
+        val playroomSongs = uiState.allSongs
+            .asSequence()
+            .filter { song -> song.showInPlayroom }
+            .filter { song -> song.featureSong || !_uiState.value.setupFeatureOnly }
+            .filter { song -> !song.pick || !_uiState.value.setupHandPickOnly }
+            .filter { song -> song.scrumming < 3 || !_uiState.value.setupNoScrumming }
+            .sortedBy { song -> song.lastPlayed }
+            .toList()
+        _uiState.update { it.copy(playroomSongs = playroomSongs) }
     }
 
     fun createSong(callback: () -> Unit) {
@@ -72,6 +111,12 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
             else -> {
                 // The user tapped a song while playing another one, we do nothing.
             }
+        }
+    }
+
+    fun updateSetup(key: BalaikaDataStore.DataType, value: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateSetup(key, value)
         }
     }
 

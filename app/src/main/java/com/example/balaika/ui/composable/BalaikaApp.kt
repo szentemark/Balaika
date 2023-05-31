@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.balaika.R
+import com.example.balaika.model.BalaikaDataStore
 import com.example.balaika.model.Repository
 import com.example.balaika.model.room.BalaikaDatabase
 import com.example.balaika.ui.viewmodel.BalaikaViewModel
@@ -42,7 +43,8 @@ fun BalaikaApp(
 ) {
     val context = LocalContext.current.applicationContext
     val database = BalaikaDatabase.getDatabase(context)
-    val repository = Repository(database)
+    val dataStore = BalaikaDataStore(context)
+    val repository = Repository(database, dataStore)
     val viewModel: BalaikaViewModel = viewModel {
         BalaikaViewModelFactory(repository).create(BalaikaViewModel::class.java)
     }

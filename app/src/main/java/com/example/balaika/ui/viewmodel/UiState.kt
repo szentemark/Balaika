@@ -10,5 +10,8 @@ data class UiState (
     val newlyCreatedSong: Boolean,
     val currentlyPlayedSong: Song? = null,
     val currentPlayStart: ZonedDateTime? = null,
-    val currentPlayLength: String = ""
+    val currentPlayLength: String = "",
+    val setupFeatureOnly: Boolean = false,
+    val setupHandPickOnly: Boolean = false,
+    val setupNoScrumming: Boolean = false
 )

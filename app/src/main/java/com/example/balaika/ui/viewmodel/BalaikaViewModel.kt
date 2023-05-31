@@ -3,6 +3,7 @@ package com.example.balaika.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.balaika.model.Repository
+import com.example.balaika.model.room.entity.Play
 import com.example.balaika.model.room.entity.Song
 import com.example.balaika.ui.data.SongListItemData
 import kotlinx.coroutines.Dispatchers
@@ -73,6 +74,8 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
     fun startStopSong(song: Song) {
         when (_uiState.value.currentlyPlayedSong?.id) {
             song.id -> {
+                // Save new play entry in Room.
+                insertPlay(song.id)
                 // Stop the currently playing song.
                 _uiState.update { it.copy(currentlyPlayedSong = null, currentPlayStart = null, currentPlayLength = "") }
             }
@@ -83,6 +86,18 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
             else -> {
                 // The user tapped a song while playing another one, we do nothing.
             }
+        }
+    }
+
+    private fun insertPlay(songId: Int) {
+        val currentPlayStart = _uiState.value.currentPlayStart ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insert(Play(
+                id = 0,
+                songId = songId,
+                from = currentPlayStart,
+                till = ZonedDateTime.now()
+            ))
         }
     }
 

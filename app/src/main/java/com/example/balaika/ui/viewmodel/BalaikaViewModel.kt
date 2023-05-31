@@ -2,10 +2,10 @@ package com.example.balaika.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.balaika.mmSs
 import com.example.balaika.model.Repository
 import com.example.balaika.model.room.entity.Play
 import com.example.balaika.model.room.entity.Song
-import com.example.balaika.ui.data.SongListItemData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,19 +22,10 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
     val uiState: StateFlow<UiState> = _uiState
 
     init {
+        // Load all songs list from repository.
         viewModelScope.launch(Dispatchers.IO) {
-            // Connect UiState with repository.
             repository.getAllSongs().collectLatest {
-                val allSongs = it.map { song ->
-                    SongListItemData(
-                        song = song,
-                        title = song.title,
-                        author = song.author,
-                        lastPlayed = "Played: -",
-                        averageLength = "Length: -"
-                    )
-                }
-                _uiState.update { uiState -> uiState.copy(allSongs = allSongs) }
+                _uiState.update { uiState -> uiState.copy(allSongs = it) }
             }
         }
         // Start ticker for playing songs.
@@ -47,12 +38,6 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
                 }
             }
         }
-    }
-
-    private fun Duration.mmSs(): String {
-        val seconds = toMillis() / 1000 % 60
-        val minutes = toMillis() / 1000 / 60
-        return "$minutes:${seconds.toString().padStart(2, '0')}"
     }
 
     fun createSong(callback: () -> Unit) {
@@ -74,8 +59,8 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
     fun startStopSong(song: Song) {
         when (_uiState.value.currentlyPlayedSong?.id) {
             song.id -> {
-                // Save new play entry in Room.
-                insertPlay(song.id)
+                // Update the repository.
+                updateRepositoryAfterPlay(song)
                 // Stop the currently playing song.
                 _uiState.update { it.copy(currentlyPlayedSong = null, currentPlayStart = null, currentPlayLength = "") }
             }
@@ -89,14 +74,28 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         }
     }
 
-    private fun insertPlay(songId: Int) {
-        val currentPlayStart = _uiState.value.currentPlayStart ?: return
+    private fun updateRepositoryAfterPlay(song: Song) {
+        val currentPlayFrom = _uiState.value.currentPlayStart ?: return
         viewModelScope.launch(Dispatchers.IO) {
+            val currentPlayTill = ZonedDateTime.now()
+            // Insert new play entry.
             repository.insert(Play(
                 id = 0,
-                songId = songId,
-                from = currentPlayStart,
-                till = ZonedDateTime.now()
+                songId = song.id,
+                from = currentPlayFrom,
+                till = currentPlayTill
+            ))
+            // Get average play length.
+            val playsForSong = repository.getPlaysForSong(song.id)
+            val averagePlayLength = if (playsForSong.isEmpty()) Duration.ZERO else {
+                Duration.ofMillis(
+                    playsForSong.map { Duration.between(it.from, it.till).toMillis() }.average().toLong()
+                )
+            }
+            // Update song entry.
+            repository.update(song.copy(
+                lastPlayed = currentPlayFrom,
+                averageLength = averagePlayLength
             ))
         }
     }
@@ -110,6 +109,8 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         pick = true,
         leftHandHeavy = false,
         featureSong = false,
-        showInPlayroom = true
+        showInPlayroom = true,
+        lastPlayed = null,
+        averageLength = null
     )
 }

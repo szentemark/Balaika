@@ -29,18 +29,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.balaika.R
-import com.example.balaika.ui.data.SongListItemData
+import com.example.balaika.mmSs
+import com.example.balaika.model.room.entity.Song
 import com.example.balaika.ui.theme.WoodyBrownHighlighted
 import com.example.balaika.ui.theme.WoodyCrayonWhiteFade
+import com.example.balaika.yyyyMmDd
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SongListItem(
-    songListItemData: SongListItemData,
+    song: Song,
     isHighlighted: Boolean,
     currentPlayLength: String,
-    onClick: (SongListItemData) -> Unit
+    onClick: (Song) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -49,7 +51,7 @@ fun SongListItem(
             containerColor = if (isHighlighted) WoodyBrownHighlighted else MaterialTheme.colorScheme.secondary
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 4.dp),
-        onClick = { onClick(songListItemData) }
+        onClick = { onClick(song) }
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -60,9 +62,9 @@ fun SongListItem(
                     .padding(12.dp)
                     .fillMaxSize()
             ) {
-                val painter = if (songListItemData.song.imageFile != "") {
+                val painter = if (song.imageFile != "") {
                     val context = LocalContext.current
-                    val imageFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), songListItemData.song.imageFile)
+                    val imageFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), song.imageFile)
                     rememberAsyncImagePainter(imageFile)
                 } else {
                     painterResource(id = R.drawable.image_placeholder)
@@ -86,11 +88,12 @@ fun SongListItem(
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Text(text = songListItemData.title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondary)
-                    Text(text = songListItemData.author, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondary)
+                    Text(text = song.title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondary)
+                    Text(text = song.author, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondary)
                     Spacer(modifier = Modifier.width(120.dp).height(17.dp).padding(vertical = 8.dp).background(WoodyCrayonWhiteFade))
-                    Text(text = songListItemData.lastPlayed, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
-                    val lengthString = if (isHighlighted && currentPlayLength == "") songListItemData.averageLength else "Length: $currentPlayLength"
+                    val lastPlayedString = "Played: ${song.lastPlayed?.yyyyMmDd() ?: "-"}"
+                    Text(text = lastPlayedString, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
+                    val lengthString = if (!isHighlighted) "Length: ${song.averageLength?.mmSs() ?: "-"}" else "Length: $currentPlayLength"
                     Text(text = lengthString, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
                 }
             }

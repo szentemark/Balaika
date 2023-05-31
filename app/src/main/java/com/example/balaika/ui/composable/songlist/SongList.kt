@@ -11,14 +11,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.balaika.R
 import com.example.balaika.model.room.entity.Song
-import com.example.balaika.ui.data.SongListItemData
 
 @Composable
 fun SongList(
-    songList: List<SongListItemData>,
+    songList: List<Song>,
     highlightedSong: Song?,
     currentPlayLength: String,
-    onClickListItem: (SongListItemData) -> Unit,
+    onClickListItem: (Song) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -29,9 +28,9 @@ fun SongList(
     ) {
         items(songList) {
             SongListItem(
-                songListItemData = it,
-                isHighlighted = it.song.id == highlightedSong?.id,
-                currentPlayLength = if (it.song.id == highlightedSong?.id) currentPlayLength else "",
+                song = it,
+                isHighlighted = it.id == highlightedSong?.id,
+                currentPlayLength = if (it.id == highlightedSong?.id) currentPlayLength else "",
                 onClick = onClickListItem
             )
         }

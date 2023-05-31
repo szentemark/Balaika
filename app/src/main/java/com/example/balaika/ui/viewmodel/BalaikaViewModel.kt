@@ -2,32 +2,41 @@ package com.example.balaika.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.balaika.mmSs
 import com.example.balaika.model.Repository
+import com.example.balaika.model.room.entity.Play
 import com.example.balaika.model.room.entity.Song
-import com.example.balaika.ui.data.SongListItemData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.ZonedDateTime
 
 class BalaikaViewModel(private val repository: Repository): ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState(allSongs = listOf(), editedSong = newSong(), newlyCreatedSong = true))
+    private val _uiState = MutableStateFlow(UiState(editedSong = newSong(), newlyCreatedSong = true))
     val uiState: StateFlow<UiState> = _uiState
 
     init {
+        // Load all songs list from repository.
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAllSongs().collectLatest {
-                val allSongs = it.map { song -> SongListItemData(
-                    song = song,
-                    title = song.title,
-                    author = song.author,
-                    lastPlayed = "Played: -",
-                    averageLength = "Length: -"
-                ) }
-                _uiState.update { uiState -> uiState.copy(allSongs = allSongs) }
+                val playroomSongs = it.filter { song -> song.showInPlayroom }.sortedBy { song -> song.lastPlayed }
+                _uiState.update { uiState -> uiState.copy(allSongs = it, playroomSongs = playroomSongs) }
+            }
+        }
+        // Start ticker for playing songs.
+        viewModelScope.launch(Dispatchers.IO) {
+            while (true) {
+                delay(100)
+                _uiState.value.currentPlayStart?.let { currentPlayStart ->
+                    val duration = Duration.between(currentPlayStart, ZonedDateTime.now())
+                    _uiState.update { it.copy(currentPlayLength = duration.mmSs()) }
+                }
             }
         }
     }
@@ -48,6 +57,50 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         }
     }
 
+    fun startStopSong(song: Song) {
+        when (_uiState.value.currentlyPlayedSong?.id) {
+            song.id -> {
+                // Update the repository.
+                updateRepositoryAfterPlay(song)
+                // Stop the currently playing song.
+                _uiState.update { it.copy(currentlyPlayedSong = null, currentPlayStart = null, currentPlayLength = "") }
+            }
+            null -> {
+                // Start playing the selected song.
+                _uiState.update { it.copy(currentlyPlayedSong = song, currentPlayStart = ZonedDateTime.now()) }
+            }
+            else -> {
+                // The user tapped a song while playing another one, we do nothing.
+            }
+        }
+    }
+
+    private fun updateRepositoryAfterPlay(song: Song) {
+        val currentPlayFrom = _uiState.value.currentPlayStart ?: return
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentPlayTill = ZonedDateTime.now()
+            // Insert new play entry.
+            repository.insert(Play(
+                id = 0,
+                songId = song.id,
+                from = currentPlayFrom,
+                till = currentPlayTill
+            ))
+            // Get average play length.
+            val playsForSong = repository.getPlaysForSong(song.id)
+            val averagePlayLength = if (playsForSong.isEmpty()) Duration.ZERO else {
+                Duration.ofMillis(
+                    playsForSong.map { Duration.between(it.from, it.till).toMillis() }.average().toLong()
+                )
+            }
+            // Update song entry.
+            repository.update(song.copy(
+                lastPlayed = currentPlayFrom,
+                averageLength = averagePlayLength
+            ))
+        }
+    }
+
     private fun newSong() = Song(
         id = 0,
         title = "",
@@ -57,6 +110,8 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         pick = true,
         leftHandHeavy = false,
         featureSong = false,
-        showInPlayroom = true
+        showInPlayroom = true,
+        lastPlayed = null,
+        averageLength = null
     )
 }

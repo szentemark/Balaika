@@ -31,14 +31,18 @@ fun BalaikaNavHost(
     ) {
         composable(route = BalaikaScreen.Playroom.name) {
             SongList(
-                songList = uiState.allSongs,
-                onClickListItem = {  }
+                songList = uiState.playroomSongs,
+                highlightedSong = uiState.currentlyPlayedSong,
+                currentPlayLength = uiState.currentPlayLength,
+                onClickListItem = { viewModel.startStopSong(it) }
             )
         }
         composable(route = BalaikaScreen.AllSongs.name) {
             SongList(
                 songList = uiState.allSongs,
-                onClickListItem = { startEditing(it.song) }
+                highlightedSong = null,
+                currentPlayLength = "",
+                onClickListItem = { startEditing(it) }
             )
         }
         composable(route = BalaikaScreen.Settings.name) {

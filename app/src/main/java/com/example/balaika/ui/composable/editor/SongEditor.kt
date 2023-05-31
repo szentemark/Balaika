@@ -38,7 +38,7 @@ fun SongEditor(
         TextRow(
             label = R.string.editor_title,
             value = song.title,
-            onValueChange = { viewModel.updateSong { song -> song.copy(title = it.trim()) } },
+            onValueChange = { viewModel.updateSong { song -> song.copy(title = it) } },
             modifier = Modifier.focusRequester(focusRequester)
         )
         if (newlyCreatedSong) {

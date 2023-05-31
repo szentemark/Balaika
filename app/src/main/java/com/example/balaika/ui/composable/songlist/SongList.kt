@@ -10,12 +10,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.balaika.R
-import com.example.balaika.ui.data.SongListItemData
+import com.example.balaika.model.room.entity.Song
 
 @Composable
 fun SongList(
-    songList: List<SongListItemData>,
-    onClickListItem: (SongListItemData) -> Unit,
+    songList: List<Song>,
+    highlightedSong: Song?,
+    currentPlayLength: String,
+    onClickListItem: (Song) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -25,7 +27,12 @@ fun SongList(
             .testTag(stringResource(id = R.string.test_tag_song_list))
     ) {
         items(songList) {
-            SongListItem(songListItemData = it, onClick = onClickListItem)
+            SongListItem(
+                song = it,
+                isHighlighted = it.id == highlightedSong?.id,
+                currentPlayLength = if (it.id == highlightedSong?.id) currentPlayLength else "",
+                onClick = onClickListItem
+            )
         }
     }
 }

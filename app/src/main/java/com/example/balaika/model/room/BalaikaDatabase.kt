@@ -1,6 +1,7 @@
 package com.example.balaika.model.room
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -10,7 +11,14 @@ import com.example.balaika.model.room.dao.SongDao
 import com.example.balaika.model.room.entity.Play
 import com.example.balaika.model.room.entity.Song
 
-@Database(entities = [Song::class, Play::class], version = 1)
+@Database(
+    entities = [Song::class, Play::class],
+    version = 2,
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration (from = 1, to = 2)
+    ]
+)
 @TypeConverters(value = [Converters::class])
 abstract class BalaikaDatabase: RoomDatabase() {
 

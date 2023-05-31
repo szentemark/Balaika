@@ -31,7 +31,7 @@ fun BalaikaNavHost(
     ) {
         composable(route = BalaikaScreen.Playroom.name) {
             SongList(
-                songList = uiState.allSongs,
+                songList = uiState.playroomSongs,
                 highlightedSong = uiState.currentlyPlayedSong,
                 currentPlayLength = uiState.currentPlayLength,
                 onClickListItem = { viewModel.startStopSong(it) }

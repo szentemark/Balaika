@@ -18,14 +18,15 @@ import java.time.ZonedDateTime
 
 class BalaikaViewModel(private val repository: Repository): ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState(allSongs = listOf(), editedSong = newSong(), newlyCreatedSong = true))
+    private val _uiState = MutableStateFlow(UiState(editedSong = newSong(), newlyCreatedSong = true))
     val uiState: StateFlow<UiState> = _uiState
 
     init {
         // Load all songs list from repository.
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAllSongs().collectLatest {
-                _uiState.update { uiState -> uiState.copy(allSongs = it) }
+                val playroomSongs = it.sortedBy { song -> song.lastPlayed }
+                _uiState.update { uiState -> uiState.copy(allSongs = it, playroomSongs = playroomSongs) }
             }
         }
         // Start ticker for playing songs.

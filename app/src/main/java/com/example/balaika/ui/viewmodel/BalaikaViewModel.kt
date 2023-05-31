@@ -3,6 +3,7 @@ package com.example.balaika.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.balaika.mmSs
+import com.example.balaika.model.BalaikaDataStore
 import com.example.balaika.model.Repository
 import com.example.balaika.model.room.entity.Play
 import com.example.balaika.model.room.entity.Song
@@ -39,6 +40,21 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
                 }
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setupValues[BalaikaDataStore.DataType.FEATURE_ONLY]?.collect { newValue ->
+                _uiState.update { it.copy(setupFeatureOnly = newValue) }
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setupValues[BalaikaDataStore.DataType.HAND_PICK_ONLY]?.collect { newValue ->
+                _uiState.update { it.copy(setupHandPickOnly = newValue) }
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.setupValues[BalaikaDataStore.DataType.NO_SCRUMMING]?.collect { newValue ->
+                _uiState.update { it.copy(setupNoScrumming = newValue) }
+            }
+        }
     }
 
     fun createSong(callback: () -> Unit) {
@@ -72,6 +88,12 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
             else -> {
                 // The user tapped a song while playing another one, we do nothing.
             }
+        }
+    }
+
+    fun updateSetup(key: BalaikaDataStore.DataType, value: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateSetup(key, value)
         }
     }
 

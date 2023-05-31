@@ -44,7 +44,7 @@ fun BalaikaNavHost(
             )
         }
         composable(route = BalaikaScreen.Settings.name) {
-            Setup()
+            Setup(viewModel)
         }
         composable(route = BalaikaScreen.SongEditor.name) {
             SongEditor(

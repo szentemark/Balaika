@@ -25,7 +25,7 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         // Load all songs list from repository.
         viewModelScope.launch(Dispatchers.IO) {
             repository.getAllSongs().collectLatest {
-                val playroomSongs = it.sortedBy { song -> song.lastPlayed }
+                val playroomSongs = it.filter { song -> song.showInPlayroom }.sortedBy { song -> song.lastPlayed }
                 _uiState.update { uiState -> uiState.copy(allSongs = it, playroomSongs = playroomSongs) }
             }
         }

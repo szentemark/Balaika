@@ -1,5 +1,6 @@
 package com.example.balaika.ui.composable
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
@@ -7,6 +8,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,13 +24,16 @@ import com.example.balaika.R
 import com.example.balaika.model.BalaikaDataStore
 import com.example.balaika.model.Repository
 import com.example.balaika.model.room.BalaikaDatabase
-import com.example.balaika.ui.viewmodel.BalaikaViewModel
-import com.example.balaika.ui.viewmodel.BalaikaViewModelFactory
 import com.example.balaika.ui.composable.navigation.BalaikaBottomNavigationBar
-import com.example.balaika.ui.composable.navigation.BalaikaNavHost
+import com.example.balaika.ui.composable.navigation.BalaikaNavHostLandscape
+import com.example.balaika.ui.composable.navigation.BalaikaNavHostPortrait
+import com.example.balaika.ui.composable.navigation.BalaikaNavigationRail
 import com.example.balaika.ui.composable.navigation.BalaikaTopAppBar
+import com.example.balaika.ui.composable.navigation.WindowStructure
 import com.example.balaika.ui.enums.BalaikaScreen
 import com.example.balaika.ui.enums.TabNavigationItem
+import com.example.balaika.ui.viewmodel.BalaikaViewModel
+import com.example.balaika.ui.viewmodel.BalaikaViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -38,8 +43,25 @@ import kotlinx.coroutines.launch
 @Composable
 fun BalaikaApp(
     navController: NavHostController,
+    windowSize: WindowWidthSizeClass,
     modifier: Modifier = Modifier
 ) {
+    val windowStructure = when (windowSize) {
+        WindowWidthSizeClass.Compact -> WindowStructure.PORTRAIT
+        WindowWidthSizeClass.Medium -> WindowStructure.LANDSCAPE
+        WindowWidthSizeClass.Expanded -> WindowStructure.LANDSCAPE
+        else -> WindowStructure.PORTRAIT
+    }
+
+    /* when (windowStructure) {
+        WindowStructure.PORTRAIT -> {
+            BalaikaAppPortrait(navController = navController, modifier)
+        }
+        WindowStructure.LANDSCAPE -> {
+            BalaikaAppLandscape(navController = navController, modifier)
+        }
+    } */
+
     val context = LocalContext.current.applicationContext
     val database = BalaikaDatabase.getDatabase(context)
     val dataStore = BalaikaDataStore(context)
@@ -65,17 +87,19 @@ fun BalaikaApp(
             )
         },
         bottomBar = {
-            BalaikaBottomNavigationBar(
-                currentScreen = currentScreen,
-                onTabPressed = {
-                    if (it.name == TabNavigationItem.Playroom.name) {
-                        navController.popBackStack(TabNavigationItem.Playroom.name, false)
-                    } else {
-                        navController.navigate(it.name)
-                    }
-                },
-                navigationItemContentList = TabNavigationItem.values().toList()
-            )
+            if (windowStructure == WindowStructure.PORTRAIT) {
+                BalaikaBottomNavigationBar(
+                    currentScreen = currentScreen,
+                    onTabPressed = {
+                        if (it.name == TabNavigationItem.Playroom.name) {
+                            navController.popBackStack(TabNavigationItem.Playroom.name, false)
+                        } else {
+                            navController.navigate(it.name)
+                        }
+                    },
+                    navigationItemContentList = TabNavigationItem.values().toList()
+                )
+            }
         },
         floatingActionButton = {
             if (currentScreen == BalaikaScreen.AllSongs) {
@@ -99,14 +123,42 @@ fun BalaikaApp(
         },
         floatingActionButtonPosition = FabPosition.End
     ) { innerPadding ->
-        BalaikaNavHost(
-            viewModel = viewModel,
-            navController = navController,
-            startEditing = {
-                viewModel.startEditingSong(it)
-                navController.navigate(BalaikaScreen.SongEditor.name)
-            },
-            modifier = modifier.padding(innerPadding)
-        )
+        when (windowStructure) {
+            WindowStructure.PORTRAIT -> {
+                BalaikaNavHostPortrait(
+                    viewModel = viewModel,
+                    navController = navController,
+                    startEditing = {
+                        viewModel.startEditingSong(it)
+                        navController.navigate(BalaikaScreen.SongEditor.name)
+                    },
+                    modifier = modifier.padding(innerPadding)
+                )
+            }
+            WindowStructure.LANDSCAPE -> {
+                Row {
+                    BalaikaNavigationRail(
+                        currentTab = TabNavigationItem.Settings,
+                        onTabPressed = {
+                            if (it.name == TabNavigationItem.Playroom.name) {
+                                navController.popBackStack(TabNavigationItem.Playroom.name, false)
+                            } else {
+                                navController.navigate(it.name)
+                            }
+                        },
+                        navigationItemContentList = TabNavigationItem.values().toList()
+                    )
+                    BalaikaNavHostLandscape(
+                        viewModel = viewModel,
+                        navController = navController,
+                        startEditing = {
+                            viewModel.startEditingSong(it)
+                            navController.navigate(BalaikaScreen.SongEditor.name)
+                        },
+                        modifier = modifier.padding(innerPadding)
+                    )
+                }
+            }
+        }
     }
 }

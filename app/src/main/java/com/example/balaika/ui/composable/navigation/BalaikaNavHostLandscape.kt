@@ -14,7 +14,7 @@ import com.example.balaika.ui.enums.BalaikaScreen
 import com.example.balaika.ui.viewmodel.BalaikaViewModel
 
 @Composable
-fun BalaikaNavHost(
+fun BalaikaNavHostLandscape(
     viewModel: BalaikaViewModel,
     navController: NavHostController,
     startEditing: (Song) -> Unit,

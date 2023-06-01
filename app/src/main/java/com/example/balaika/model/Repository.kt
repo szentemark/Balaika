@@ -16,6 +16,8 @@ class Repository(private val database: BalaikaDatabase, private val dataStore: B
 
     fun update(song: Song) = database.songDao().update(song)
 
+    fun delete(song: Song) = database.songDao().delete(song)
+
     suspend fun getPlaysForSong(songId: Int): List<Play> = database.playDao().getPlaysForSong(songId)
 
     fun insert(play: Play) = database.playDao().insert(play)

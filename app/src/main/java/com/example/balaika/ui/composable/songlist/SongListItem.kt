@@ -1,8 +1,10 @@
 package com.example.balaika.ui.composable.songlist
 
 import android.os.Environment
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,22 +35,27 @@ import com.example.balaika.model.room.entity.Song
 import com.example.balaika.yyyyMmDd
 import java.io.File
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SongListItem(
     song: Song,
     isHighlighted: Boolean,
     currentPlayLength: String,
-    onClick: (Song) -> Unit
+    onClick: (Song) -> Unit,
+    onLongClick: (Song) -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .combinedClickable(
+                onClick = { onClick(song) },
+                onLongClick = { onLongClick(song) }
+            ),
         shape = CardDefaults.elevatedShape,
         colors = CardDefaults.cardColors(
             containerColor = if (isHighlighted) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.secondary
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 4.dp),
-        onClick = { onClick(song) }
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 4.dp)
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),

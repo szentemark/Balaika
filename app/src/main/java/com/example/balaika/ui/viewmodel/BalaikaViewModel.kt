@@ -96,6 +96,12 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         }
     }
 
+    fun deleteSong(song: Song) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.delete(song)
+        }
+    }
+
     fun startStopSong(song: Song) {
         when (_uiState.value.currentlyPlayedSong?.id) {
             song.id -> {
@@ -111,6 +117,13 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
             else -> {
                 // The user tapped a song while playing another one, we do nothing.
             }
+        }
+    }
+
+    fun cancelPlay(song: Song) {
+        if (_uiState.value.currentlyPlayedSong?.id == song.id) {
+            // Cancel the currently playing song without saving it.
+            _uiState.update { it.copy(currentlyPlayedSong = null, currentPlayStart = null, currentPlayLength = "") }
         }
     }
 

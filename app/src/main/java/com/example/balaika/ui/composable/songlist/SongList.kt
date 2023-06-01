@@ -18,6 +18,7 @@ fun SongList(
     highlightedSong: Song?,
     currentPlayLength: String,
     onClickListItem: (Song) -> Unit,
+    onLongClickListItem: (Song) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -31,7 +32,8 @@ fun SongList(
                 song = it,
                 isHighlighted = it.id == highlightedSong?.id,
                 currentPlayLength = if (it.id == highlightedSong?.id) currentPlayLength else "",
-                onClick = onClickListItem
+                onClick = onClickListItem,
+                onLongClick = onLongClickListItem
             )
         }
     }

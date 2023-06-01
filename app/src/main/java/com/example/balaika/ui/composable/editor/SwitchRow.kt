@@ -12,9 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.example.balaika.ui.theme.DarkBrown
-import com.example.balaika.ui.theme.DarkBrownCrayonCream
-import com.example.balaika.ui.theme.DarkBrownCrayonDark
 
 @Composable
 fun SwitchRow(
@@ -30,16 +27,16 @@ fun SwitchRow(
     ) {
         Text(
             text = stringResource(id = label),
-            color = DarkBrownCrayonCream,
+            color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.bodyMedium
         )
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(
-                uncheckedTrackColor = DarkBrown,
-                uncheckedBorderColor = DarkBrownCrayonDark,
-                uncheckedThumbColor = DarkBrownCrayonCream
+                uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                uncheckedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                uncheckedThumbColor = MaterialTheme.colorScheme.onBackground
             )
         )
     }

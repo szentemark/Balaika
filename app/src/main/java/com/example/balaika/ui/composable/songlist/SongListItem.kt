@@ -31,8 +31,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.balaika.R
 import com.example.balaika.mmSs
 import com.example.balaika.model.room.entity.Song
-import com.example.balaika.ui.theme.WoodyBrownHighlighted
-import com.example.balaika.ui.theme.WoodyCrayonWhiteFade
 import com.example.balaika.yyyyMmDd
 import java.io.File
 
@@ -48,7 +46,7 @@ fun SongListItem(
         modifier = Modifier.fillMaxWidth(),
         shape = CardDefaults.elevatedShape,
         colors = CardDefaults.cardColors(
-            containerColor = if (isHighlighted) WoodyBrownHighlighted else MaterialTheme.colorScheme.secondary
+            containerColor = if (isHighlighted) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.secondary
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, pressedElevation = 4.dp),
         onClick = { onClick(song) }
@@ -90,7 +88,7 @@ fun SongListItem(
                 ) {
                     Text(text = song.title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondary)
                     Text(text = song.author, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondary)
-                    Spacer(modifier = Modifier.width(120.dp).height(17.dp).padding(vertical = 8.dp).background(WoodyCrayonWhiteFade))
+                    Spacer(modifier = Modifier.width(120.dp).height(17.dp).padding(vertical = 8.dp).background(MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.5f)))
                     val lastPlayedString = "Played: ${song.lastPlayed?.yyyyMmDd() ?: "-"}"
                     Text(text = lastPlayedString, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
                     val lengthString = if (!isHighlighted) "Length: ${song.averageLength?.mmSs() ?: "-"}" else "Length: $currentPlayLength"

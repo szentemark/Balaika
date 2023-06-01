@@ -5,6 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,8 +29,6 @@ import com.example.balaika.ui.composable.navigation.BalaikaNavHost
 import com.example.balaika.ui.composable.navigation.BalaikaTopAppBar
 import com.example.balaika.ui.enums.BalaikaScreen
 import com.example.balaika.ui.enums.TabNavigationItem
-import com.example.balaika.ui.theme.CherryBrown
-import com.example.balaika.ui.theme.CherryCrayonWhite
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -88,8 +87,8 @@ fun BalaikaApp(
                             }
                         }
                     },
-                    containerColor = CherryBrown,
-                    contentColor = CherryCrayonWhite
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.baseline_add_24),

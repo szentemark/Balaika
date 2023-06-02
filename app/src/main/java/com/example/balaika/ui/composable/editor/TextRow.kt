@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -14,8 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import com.example.balaika.ui.theme.DarkBrownCrayonCream
-import com.example.balaika.ui.theme.DarkBrownCrayonDark
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,11 +32,11 @@ fun TextRow(
         value = value,
         onValueChange = onValueChange,
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = DarkBrownCrayonCream,
-            unfocusedBorderColor = DarkBrownCrayonDark,
-            focusedLabelColor = DarkBrownCrayonCream,
-            unfocusedLabelColor = DarkBrownCrayonCream,
-            textColor = DarkBrownCrayonCream
+            focusedBorderColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+            focusedLabelColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedLabelColor = MaterialTheme.colorScheme.onBackground,
+            textColor = MaterialTheme.colorScheme.onBackground
         ),
         shape = RoundedCornerShape(24.dp),
         keyboardOptions = KeyboardOptions.Default.copy(

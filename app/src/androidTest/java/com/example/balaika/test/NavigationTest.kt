@@ -1,6 +1,7 @@
 package com.example.balaika.test
 
 import androidx.activity.ComponentActivity
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.performClick
@@ -26,7 +27,7 @@ class NavigationTest {
             navController = TestNavHostController(LocalContext.current).apply {
                 navigatorProvider.addNavigator(ComposeNavigator())
             }
-            BalaikaApp(navController = navController)
+            BalaikaApp(navController = navController, windowSize = WindowWidthSizeClass.Compact)
         }
     }
 

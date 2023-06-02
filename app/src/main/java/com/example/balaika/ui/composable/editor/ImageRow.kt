@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -26,7 +27,6 @@ import com.example.balaika.COVER_IMAGES_DIRECTORY
 import com.example.balaika.R
 import com.example.balaika.calculateImageFilePath
 import com.example.balaika.model.room.entity.Song
-import com.example.balaika.ui.theme.DarkBrownCrayonDark
 import java.io.File
 import java.time.ZonedDateTime
 
@@ -47,7 +47,7 @@ fun ImageRow(song: Song, onImageSaved: (Long, String) -> Unit) {
         shape = RoundedCornerShape(size = 20.dp),
         border = BorderStroke(
             width = 1.dp,
-            color = DarkBrownCrayonDark
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
         ),
         modifier = Modifier
             .size(240.dp)

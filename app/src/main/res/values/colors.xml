@@ -11,4 +11,8 @@
     <color name="cherry_crayon_white">#FFF0E0C0</color>
     <color name="woody_crayon_white_28">#28E8D4B4</color>
     <color name="woody_crayon_white_80">#80E8D4B4</color>
+
+    <color name="dark_mode_on_grey_1">#FFE0E0E0</color>
+    <color name="dark_mode_on_grey_2_28">#28C8C8C8</color>
+    <color name="dark_mode_on_grey_2_80">#80C8C8C8</color>
 </resources>

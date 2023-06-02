@@ -10,34 +10,30 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = DarkModeGrey1,
+    secondary = DarkModeGrey2,
+    onPrimary = DarkModeOnGrey1,
+    onSecondary = DarkModeOnGrey2,
+    background = Color.Black,
+    onBackground = DarkModeOnBlack,
+    tertiary = DarkModeGrey2Highlighted
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = CherryBrown,
     secondary = WoodyBrown,
-    tertiary = Pink40,
     onPrimary = CherryCrayonWhite,
     onSecondary = WoodyCrayonWhite,
-    background = DarkBrown
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    background = DarkBrown,
+    onBackground = DarkBrownCrayonCream,
+    tertiary = WoodyBrownHighlighted
 )
 
 @Composable
@@ -61,7 +57,7 @@ fun BalaikaTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
         }
     }
 

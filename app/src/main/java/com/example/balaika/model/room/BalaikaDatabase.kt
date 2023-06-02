@@ -13,10 +13,11 @@ import com.example.balaika.model.room.entity.Song
 
 @Database(
     entities = [Song::class, Play::class],
-    version = 2,
+    version = 3,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration (from = 1, to = 2)
+        AutoMigration (from = 1, to = 2),
+        AutoMigration (from = 2, to = 3)
     ]
 )
 @TypeConverters(value = [Converters::class])

@@ -20,7 +20,7 @@ import java.time.ZonedDateTime
 
 class BalaikaViewModel(private val repository: Repository): ViewModel() {
 
-    private val _uiState = MutableStateFlow(UiState(editedSong = newSong(), newlyCreatedSong = true))
+    private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState
 
     init {
@@ -80,19 +80,30 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         _uiState.update { it.copy(playroomSongs = playroomSongs) }
     }
 
-    fun createSong(callback: () -> Unit) {
+    fun createSong() {
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.update { it.copy(editedSong = repository.insert(newSong()), newlyCreatedSong = true) }
-            callback()
         }
     }
 
     fun startEditingSong(song: Song) = _uiState.update { it.copy(editedSong = song, newlyCreatedSong = false) }
 
+    fun doneEditingSong() = _uiState.update { it.copy(editedSong = null) }
+
+    fun isEditingSong() = _uiState.value.editedSong != null
+
     fun updateSong(updateFunction: (Song) -> Song) {
-        _uiState.update { it.copy(editedSong = updateFunction(it.editedSong)) }
+        _uiState.value.editedSong?.let { editedSong ->
+            _uiState.update { it.copy(editedSong = updateFunction(editedSong)) }
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.update(editedSong)
+            }
+        }
+    }
+
+    fun deleteSong(song: Song) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.update(_uiState.value.editedSong)
+            repository.delete(song)
         }
     }
 
@@ -111,6 +122,13 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
             else -> {
                 // The user tapped a song while playing another one, we do nothing.
             }
+        }
+    }
+
+    fun cancelPlay(song: Song) {
+        if (_uiState.value.currentlyPlayedSong?.id == song.id) {
+            // Cancel the currently playing song without saving it.
+            _uiState.update { it.copy(currentlyPlayedSong = null, currentPlayStart = null, currentPlayLength = "") }
         }
     }
 
@@ -141,7 +159,8 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
             // Update song entry.
             repository.update(song.copy(
                 lastPlayed = currentPlayFrom,
-                averageLength = averagePlayLength
+                averageLength = averagePlayLength,
+                playCount = playsForSong.size
             ))
         }
     }
@@ -157,6 +176,7 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         featureSong = false,
         showInPlayroom = true,
         lastPlayed = null,
-        averageLength = null
+        averageLength = null,
+        playCount = 0
     )
 }

@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.map
 
 class BalaikaDataStore(private val context: Context) {
 
-    private val Context.dataStore by preferencesDataStore(name = "balaikaSetup")
+    companion object {
+        private val Context.dataStore by preferencesDataStore(name = "balaikaSetup")
+    }
 
     val values = DataType.values().associateWith {
             key -> context.dataStore.data.map { it[booleanPreferencesKey(key.name)] ?: false }

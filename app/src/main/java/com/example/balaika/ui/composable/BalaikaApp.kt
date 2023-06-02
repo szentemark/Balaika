@@ -53,15 +53,6 @@ fun BalaikaApp(
         else -> WindowStructure.PORTRAIT
     }
 
-    /* when (windowStructure) {
-        WindowStructure.PORTRAIT -> {
-            BalaikaAppPortrait(navController = navController, modifier)
-        }
-        WindowStructure.LANDSCAPE -> {
-            BalaikaAppLandscape(navController = navController, modifier)
-        }
-    } */
-
     val context = LocalContext.current.applicationContext
     val database = BalaikaDatabase.getDatabase(context)
     val dataStore = BalaikaDataStore(context)
@@ -136,9 +127,9 @@ fun BalaikaApp(
                 )
             }
             WindowStructure.LANDSCAPE -> {
-                Row {
+                Row(modifier.padding(innerPadding)) {
                     BalaikaNavigationRail(
-                        currentTab = TabNavigationItem.Settings,
+                        currentScreen = currentScreen,
                         onTabPressed = {
                             if (it.name == TabNavigationItem.Playroom.name) {
                                 navController.popBackStack(TabNavigationItem.Playroom.name, false)
@@ -155,7 +146,7 @@ fun BalaikaApp(
                             viewModel.startEditingSong(it)
                             navController.navigate(BalaikaScreen.SongEditor.name)
                         },
-                        modifier = modifier.padding(innerPadding)
+                        modifier = Modifier
                     )
                 }
             }

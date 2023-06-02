@@ -37,23 +37,24 @@ fun BalaikaNavHostPortrait(
             )
         }
         composable(route = BalaikaScreen.AllSongs.name) {
-            SongList(
-                songList = uiState.allSongs,
-                highlightedSong = null,
-                currentPlayLength = "",
-                onClickListItem = { startEditing(it) },
-                onLongClickListItem = { viewModel.deleteSong(it) }
-            )
+            if (uiState.editedSong == null) {
+                SongList(
+                    songList = uiState.allSongs,
+                    highlightedSong = null,
+                    currentPlayLength = "",
+                    onClickListItem = { startEditing(it) },
+                    onLongClickListItem = { viewModel.deleteSong(it) }
+                )
+            } else {
+                SongEditor(
+                    song = uiState.editedSong,
+                    newlyCreatedSong = uiState.newlyCreatedSong,
+                    viewModel = viewModel
+                )
+            }
         }
         composable(route = BalaikaScreen.Settings.name) {
             Setup(viewModel)
-        }
-        composable(route = BalaikaScreen.SongEditor.name) {
-            SongEditor(
-                song = uiState.editedSong,
-                newlyCreatedSong = uiState.newlyCreatedSong,
-                viewModel = viewModel
-            )
         }
     }
 }

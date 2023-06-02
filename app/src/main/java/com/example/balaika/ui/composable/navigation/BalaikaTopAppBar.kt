@@ -1,5 +1,6 @@
 package com.example.balaika.ui.composable.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,12 +19,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.balaika.R
-import com.example.balaika.ui.enums.BalaikaScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BalaikaTopAppBar(
-    currentScreen: BalaikaScreen,
+    @StringRes currentScreenTitle: Int,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
@@ -31,7 +31,7 @@ fun BalaikaTopAppBar(
     TopAppBar(
         title = {
             Text(
-                text = stringResource(id = currentScreen.title),
+                text = stringResource(id = currentScreenTitle),
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(start = 12.dp)
             )
@@ -48,7 +48,7 @@ fun BalaikaTopAppBar(
                 Image(
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = null,
-                    modifier = Modifier.height(48.dp) // .padding(horizontal = 20.dp)
+                    modifier = Modifier.height(48.dp)
                 )
             }
         },

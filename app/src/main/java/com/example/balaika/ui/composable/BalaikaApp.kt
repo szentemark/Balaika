@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -34,10 +35,6 @@ import com.example.balaika.ui.enums.BalaikaScreen
 import com.example.balaika.ui.enums.TabNavigationItem
 import com.example.balaika.ui.viewmodel.BalaikaViewModel
 import com.example.balaika.ui.viewmodel.BalaikaViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,19 +57,31 @@ fun BalaikaApp(
     val viewModel: BalaikaViewModel = viewModel {
         BalaikaViewModelFactory(repository).create(BalaikaViewModel::class.java)
     }
+    val uiState = viewModel.uiState.collectAsState().value
 
     val backStackEntry by navController.currentBackStackEntryAsState()
 
     val currentScreen = BalaikaScreen.valueOf(
         backStackEntry?.destination?.route ?: BalaikaScreen.Playroom.name
     )
+    val currentScreenTitle = if (uiState.editedSong == null) {
+        currentScreen.title
+    } else {
+        R.string.page_song_editor
+    }
 
     Scaffold(
         topBar = {
             BalaikaTopAppBar(
-                currentScreen = currentScreen,
+                currentScreenTitle = currentScreenTitle,
                 canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = { navController.navigateUp() },
+                navigateUp = {
+                    if (viewModel.isEditingSong()) {
+                        viewModel.doneEditingSong()
+                    } else {
+                        navController.navigateUp()
+                    }
+                 },
                 modifier = Modifier
                     .testTag(stringResource(id = R.string.test_tag_top_app_bar))
             )
@@ -93,15 +102,9 @@ fun BalaikaApp(
             }
         },
         floatingActionButton = {
-            if (currentScreen == BalaikaScreen.AllSongs) {
+            if (currentScreen == BalaikaScreen.AllSongs && uiState.editedSong == null) {
                 FloatingActionButton(
-                    onClick = {
-                        viewModel.createSong {
-                            CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
-                                navController.navigate(BalaikaScreen.SongEditor.name)
-                            }
-                        }
-                    },
+                    onClick = { viewModel.createSong() },
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
@@ -119,10 +122,7 @@ fun BalaikaApp(
                 BalaikaNavHostPortrait(
                     viewModel = viewModel,
                     navController = navController,
-                    startEditing = {
-                        viewModel.startEditingSong(it)
-                        navController.navigate(BalaikaScreen.SongEditor.name)
-                    },
+                    startEditing = { viewModel.startEditingSong(it) },
                     modifier = modifier.padding(innerPadding)
                 )
             }
@@ -144,7 +144,6 @@ fun BalaikaApp(
                         navController = navController,
                         startEditing = {
                             viewModel.startEditingSong(it)
-                            navController.navigate(BalaikaScreen.SongEditor.name)
                         },
                         modifier = Modifier
                     )

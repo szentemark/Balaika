@@ -1,5 +1,6 @@
 package com.example.balaika.ui.composable.navigation
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -37,23 +38,35 @@ fun BalaikaNavHostLandscape(
             )
         }
         composable(route = BalaikaScreen.AllSongs.name) {
-            SongList(
-                songList = uiState.allSongs,
-                highlightedSong = null,
-                currentPlayLength = "",
-                onClickListItem = { startEditing(it) },
-                onLongClickListItem = { viewModel.deleteSong(it) }
-            )
+            if (uiState.editedSong == null) {
+                SongList(
+                    songList = uiState.allSongs,
+                    highlightedSong = null,
+                    currentPlayLength = "",
+                    onClickListItem = { startEditing(it) },
+                    onLongClickListItem = { viewModel.deleteSong(it) }
+                )
+            } else {
+                Row {
+                    SongList(
+                        songList = uiState.allSongs,
+                        highlightedSong = null,
+                        currentPlayLength = "",
+                        onClickListItem = { startEditing(it) },
+                        onLongClickListItem = { viewModel.deleteSong(it) },
+                        modifier = Modifier.weight(0.5f)
+                    )
+                    SongEditor(
+                        song = uiState.editedSong,
+                        newlyCreatedSong = uiState.newlyCreatedSong,
+                        viewModel = viewModel,
+                        modifier = Modifier.weight(0.5f)
+                    )
+                }
+            }
         }
         composable(route = BalaikaScreen.Settings.name) {
             Setup(viewModel)
-        }
-        composable(route = BalaikaScreen.SongEditor.name) {
-            SongEditor(
-                song = uiState.editedSong,
-                newlyCreatedSong = uiState.newlyCreatedSong,
-                viewModel = viewModel
-            )
         }
     }
 }

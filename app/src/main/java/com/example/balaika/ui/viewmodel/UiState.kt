@@ -6,8 +6,8 @@ import java.time.ZonedDateTime
 data class UiState (
     val allSongs: List<Song> = listOf(),
     val playroomSongs: List<Song> = listOf(),
-    val editedSong: Song,
-    val newlyCreatedSong: Boolean,
+    val editedSong: Song? = null,
+    val newlyCreatedSong: Boolean = false,
     val currentlyPlayedSong: Song? = null,
     val currentPlayStart: ZonedDateTime? = null,
     val currentPlayLength: String = "",

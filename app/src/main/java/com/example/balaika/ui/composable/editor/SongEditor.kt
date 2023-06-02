@@ -24,11 +24,12 @@ import com.example.balaika.ui.viewmodel.BalaikaViewModel
 fun SongEditor(
     song: Song,
     newlyCreatedSong: Boolean,
-    viewModel: BalaikaViewModel
+    viewModel: BalaikaViewModel,
+    modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
     ) {

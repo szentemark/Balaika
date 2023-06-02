@@ -1,5 +1,6 @@
 package com.example.balaika.ui.composable
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -87,7 +88,7 @@ fun BalaikaApp(
             )
         },
         bottomBar = {
-            if (windowStructure == WindowStructure.PORTRAIT) {
+            AnimatedVisibility(visible = windowStructure == WindowStructure.PORTRAIT) {
                 BalaikaBottomNavigationBar(
                     currentScreen = currentScreen,
                     onTabPressed = {

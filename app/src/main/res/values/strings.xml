@@ -14,6 +14,13 @@
     <string name="editor_scrumming_split">split</string>
     <string name="editor_title">Title</string>
 
+    <plurals name="list_play_count">
+        <item quantity="one">Played %1$d time</item>
+        <item quantity="other">Played %1$d times</item>
+    </plurals>
+    <string name="list_last_time">Last time: %1$s</string>
+    <string name="list_song_length">Length: %1$s</string>
+
     <string name="page_playroom">Playroom</string>
     <string name="page_all_songs">All songs</string>
     <string name="page_settings">Settings</string>

@@ -27,6 +27,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.balaika.R
@@ -73,31 +75,53 @@ fun SongListItem(
                 } else {
                     painterResource(id = R.drawable.image_placeholder)
                 }
-                Image(
-                    painter = painter,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(104.dp)
-                        .clip(
-                            CutCornerShape(
-                                topStart = 10.dp,
-                                topEnd = 0.dp,
-                                bottomStart = 0.dp,
-                                bottomEnd = 10.dp
+                Box(
+                    contentAlignment = Alignment.CenterStart,
+                    modifier = Modifier.height(128.dp)
+                ) {
+                    Image(
+                        painter = painter,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(124.dp)
+                            .clip(
+                                CutCornerShape(
+                                    topStart = 10.dp,
+                                    topEnd = 0.dp,
+                                    bottomStart = 0.dp,
+                                    bottomEnd = 10.dp
+                                )
                             )
-                        )
-                )
+                    )
+                }
                 Spacer(modifier = Modifier.width(12.dp))
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Text(text = song.title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondary)
                     Text(text = song.author, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondary)
-                    Spacer(modifier = Modifier.width(120.dp).height(17.dp).padding(vertical = 8.dp).background(MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.5f)))
-                    val lastPlayedString = "Played: ${song.lastPlayed?.yyyyMmDd() ?: "-"}"
-                    Text(text = lastPlayedString, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
-                    val lengthString = if (!isHighlighted) "Length: ${song.averageLength?.mmSs() ?: "-"}" else "Length: $currentPlayLength"
+                    Spacer(modifier = Modifier
+                        .width(120.dp)
+                        .height(17.dp)
+                        .padding(vertical = 8.dp)
+                        .background(MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.5f)))
+                    val playCount = pluralStringResource(id = R.plurals.list_play_count, count = song.playCount, song.playCount)
+                    Text(
+                        text = playCount,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    )
+                    val lastPlayed = stringResource(id = R.string.list_last_time, song.lastPlayed?.yyyyMmDd() ?: "-")
+                    Text(
+                        text = lastPlayed,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    )
+                    val lengthString = stringResource(
+                        id = R.string.list_song_length,
+                        if (!isHighlighted) song.averageLength?.mmSs() ?: "-" else currentPlayLength
+                    )
                     Text(text = lengthString, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondary)
                 }
             }

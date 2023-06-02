@@ -18,5 +18,6 @@ data class Song(
     @ColumnInfo(name = "feature_song") val featureSong: Boolean,
     @ColumnInfo(name = "show_in_playroom") val showInPlayroom: Boolean,
     @ColumnInfo(name = "last_played") val lastPlayed: ZonedDateTime?,
-    @ColumnInfo(name = "average_length") val averageLength: Duration?
+    @ColumnInfo(name = "average_length") val averageLength: Duration?,
+    @ColumnInfo(name = "play_count", defaultValue = "0") val playCount: Int
 )

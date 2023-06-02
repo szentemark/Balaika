@@ -159,7 +159,8 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
             // Update song entry.
             repository.update(song.copy(
                 lastPlayed = currentPlayFrom,
-                averageLength = averagePlayLength
+                averageLength = averagePlayLength,
+                playCount = playsForSong.size
             ))
         }
     }
@@ -175,6 +176,7 @@ class BalaikaViewModel(private val repository: Repository): ViewModel() {
         featureSong = false,
         showInPlayroom = true,
         lastPlayed = null,
-        averageLength = null
+        averageLength = null,
+        playCount = 0
     )
 }
